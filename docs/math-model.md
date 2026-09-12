@@ -42,3 +42,15 @@ Tests will verify:
 - The relationship between bridge strength and algebraic connectivity.
 
 Eigenvector signs will be stabilized for display. Repeated eigenvalues will be presented as degenerate eigenspaces rather than implying that one arbitrary basis is unique.
+
+## Numerical policy
+
+The initial absolute tolerance is `1e-10`. Eigenvalues whose magnitude is at or
+below that tolerance are reported as zero. A value below `-1e-10` is treated as a
+violated Laplacian invariant rather than being clipped silently.
+
+For display, each eigenvector is multiplied by `-1` when necessary so its
+largest-magnitude entry is nonnegative. This resolves the ordinary sign ambiguity
+without claiming that a particular basis inside a repeated eigenspace is unique.
+Consecutive eigenvalues within the tolerance are returned as one eigenspace with
+explicit member indices.
