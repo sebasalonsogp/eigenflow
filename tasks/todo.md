@@ -188,15 +188,15 @@ small React hook for lifecycle and stale-request handling.
 
 **Acceptance criteria:**
 
-- [ ] Loading, success, validation failure, and network failure are represented.
-- [ ] Superseded requests are cancelled or ignored deterministically.
-- [ ] Client tests use representative API fixtures rather than duplicating math.
+- [x] Loading, success, validation failure, and network failure are represented.
+- [x] Superseded requests are cancelled or ignored deterministically.
+- [x] Client tests use representative API fixtures rather than duplicating math.
 
 **Verification:**
 
-- [ ] `npm test -- --run`
-- [ ] `npm run lint`
-- [ ] `npm run build`
+- [x] `npm test -- --run`
+- [x] `npm run lint`
+- [x] `npm run build`
 
 **Dependencies:** Task 2.3
 
