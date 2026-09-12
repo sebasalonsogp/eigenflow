@@ -78,7 +78,7 @@ graph validation and node ordering
 **Exit gate:** Frontend and backend checks pass; the built container serves both
 `/api/health` and the application shell.
 
-### Phase 1: Numerical truth layer
+### Phase 1: Numerical truth layer — complete
 
 **Objective:** Make the mathematical core independently trustworthy before it is
 used to drive the interface.
