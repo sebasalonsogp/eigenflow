@@ -89,13 +89,13 @@ shared by numerical tests and later experiment definitions.
 
 **Acceptance criteria:**
 
-- [ ] Fixtures contain no presentation-specific values.
-- [ ] Bridge strengthening increases algebraic connectivity in the bottleneck test.
-- [ ] Path, complete, and star spectra satisfy documented known properties.
+- [x] Fixtures contain no presentation-specific values.
+- [x] Bridge strengthening increases algebraic connectivity in the bottleneck test.
+- [x] Path, complete, and star spectra satisfy documented known properties.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_fixtures.py tests/test_spectrum.py`
+- [x] `uv run pytest tests/test_fixtures.py tests/test_spectrum.py`
 
 **Dependencies:** Tasks 1.1–1.3
 
