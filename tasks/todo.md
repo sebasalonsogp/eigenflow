@@ -143,13 +143,13 @@ diffusion into one framework-independent application service.
 
 **Acceptance criteria:**
 
-- [ ] Every vector and matrix is explicitly aligned to one `nodeOrder`.
-- [ ] The service exposes no FastAPI or JSON serialization concerns.
-- [ ] One integration test covers the complete bottleneck computation.
+- [x] Every vector and matrix is explicitly aligned to one `nodeOrder`.
+- [x] The service exposes no FastAPI or JSON serialization concerns.
+- [x] One integration test covers the complete bottleneck computation.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_analysis.py`
+- [x] `uv run pytest tests/test_analysis.py`
 
 **Dependencies:** Tasks 1.2–1.4 and 2.1
 
