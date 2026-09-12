@@ -1,0 +1,15 @@
+.git
+.github
+.uv-cache
+frontend/node_modules
+frontend/dist
+frontend/coverage
+backend/.venv
+backend/.pytest_cache
+backend/.ruff_cache
+backend/htmlcov
+**/__pycache__
+*.pyc
+.env*
+docs
+tasks
