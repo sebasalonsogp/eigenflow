@@ -42,14 +42,14 @@ supported graph input into a canonical internal representation.
 
 **Acceptance criteria:**
 
-- [ ] Matrix indices align exactly with the returned `nodeOrder`.
-- [ ] Weighted fixtures produce symmetric matrices with correct degrees.
-- [ ] Laplacian rows sum to zero within the documented tolerance.
+- [x] Matrix indices align exactly with the returned `nodeOrder`.
+- [x] Weighted fixtures produce symmetric matrices with correct degrees.
+- [x] Laplacian rows sum to zero within the documented tolerance.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_laplacian.py`
-- [ ] `uv run ruff check .`
+- [x] `uv run pytest tests/test_laplacian.py`
+- [x] `uv run ruff check .`
 
 **Dependencies:** Task 1.1
 
