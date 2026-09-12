@@ -65,15 +65,15 @@ and numerical diagnostics without coupling the kernel to HTTP models.
 
 **Acceptance criteria:**
 
-- [ ] Eigenvalues are sorted and tolerance-level negatives are handled explicitly.
-- [ ] Tests verify eigenpair residuals, zero-eigenvalue multiplicity, and `lambda_2`.
-- [ ] Repeated eigenvalues are represented as degenerate eigenspaces in metadata.
+- [x] Eigenvalues are sorted and tolerance-level negatives are handled explicitly.
+- [x] Tests verify eigenpair residuals, zero-eigenvalue multiplicity, and `lambda_2`.
+- [x] Repeated eigenvalues are represented as degenerate eigenspaces in metadata.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_spectrum.py`
-- [ ] `uv run pytest`
-- [ ] `uv run ruff check .`
+- [x] `uv run pytest tests/test_spectrum.py`
+- [ ] `uv run pytest` — run at Checkpoint A after Task 1.4.
+- [x] `uv run ruff check .`
 
 **Dependencies:** Task 1.2
 
