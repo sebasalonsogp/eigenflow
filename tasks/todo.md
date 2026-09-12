@@ -72,7 +72,7 @@ and numerical diagnostics without coupling the kernel to HTTP models.
 **Verification:**
 
 - [x] `uv run pytest tests/test_spectrum.py`
-- [ ] `uv run pytest` — run at Checkpoint A after Task 1.4.
+- [x] `uv run pytest`
 - [x] `uv run ruff check .`
 
 **Dependencies:** Task 1.2
@@ -106,10 +106,10 @@ shared by numerical tests and later experiment definitions.
 
 ### Checkpoint A: Numerical foundation
 
-- [ ] Full backend suite and Ruff pass.
-- [ ] Numerical tolerances and invariants are documented.
-- [ ] Mathematical interfaces are reviewed before HTTP exposure.
-- [ ] Production Docker image still builds.
+- [x] Full backend suite and Ruff pass.
+- [x] Numerical tolerances and invariants are documented.
+- [x] Mathematical interfaces are reviewed before HTTP exposure.
+- [x] Production Docker image still builds.
 
 ## Phase 2: Bottleneck end-to-end slice
 
