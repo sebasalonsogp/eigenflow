@@ -2,17 +2,33 @@
 
 from typing import Annotated, Literal, Self
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
 from eigenflow_api.analysis import GraphAnalysis
+from eigenflow_api.math.graph import MAX_NODES
 
-MAX_EDGES = 435
+MAX_EDGES = MAX_NODES * (MAX_NODES - 1) // 2
 MAX_NODE_ID_LENGTH = 64
 MAX_TIME_SAMPLES = 240
 
-FiniteNonnegative = Annotated[float, Field(ge=0, allow_inf_nan=False)]
-FinitePositive = Annotated[float, Field(gt=0, allow_inf_nan=False)]
+
+def _reject_boolean(value: object) -> object:
+    if isinstance(value, bool):
+        raise ValueError("value must be a number, not a boolean")
+    return value
+
+
+FiniteNonnegative = Annotated[
+    float,
+    BeforeValidator(_reject_boolean),
+    Field(ge=0, allow_inf_nan=False),
+]
+FinitePositive = Annotated[
+    float,
+    BeforeValidator(_reject_boolean),
+    Field(gt=0, allow_inf_nan=False),
+]
 
 
 class ApiModel(BaseModel):
@@ -49,7 +65,7 @@ class EdgeInput(ApiModel):
 class AnalysisRequest(ApiModel):
     """Bounded inputs for one deterministic graph analysis."""
 
-    nodes: list[NodeInput] = Field(min_length=1, max_length=30)
+    nodes: list[NodeInput] = Field(min_length=1, max_length=MAX_NODES)
     edges: list[EdgeInput] = Field(default_factory=list, max_length=MAX_EDGES)
     heat_source: str = Field(min_length=1, max_length=MAX_NODE_ID_LENGTH)
     times: list[FiniteNonnegative] = Field(min_length=1, max_length=MAX_TIME_SAMPLES)

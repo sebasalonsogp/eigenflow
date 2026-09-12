@@ -98,3 +98,16 @@ async def test_analysis_endpoint_enforces_node_and_time_bounds() -> None:
     locations = {tuple(error["loc"]) for error in response.json()["detail"]}
     assert ("body", "nodes") in locations
     assert ("body", "times") in locations
+
+
+@pytest.mark.anyio
+async def test_analysis_endpoint_does_not_coerce_booleans_into_edge_weights() -> None:
+    payload = _bottleneck_payload()
+    payload["edges"] = [{"source": "left-0", "target": "left-1", "weight": True}]
+    transport = ASGITransport(app=app)
+
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        response = await client.post("/api/analysis", json=payload)
+
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["loc"] == ["body", "edges", 0, "weight"]
