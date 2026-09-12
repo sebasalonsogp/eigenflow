@@ -165,14 +165,14 @@ application service to a single cohesive HTTP endpoint.
 
 **Acceptance criteria:**
 
-- [ ] Valid bottleneck requests return the full typed analysis payload.
-- [ ] Invalid graphs return stable 422 responses with actionable field errors.
-- [ ] Endpoint tests verify shape, alignment, bounds, and one numerical diagnostic.
+- [x] Valid bottleneck requests return the full typed analysis payload.
+- [x] Invalid graphs return stable 422 responses with actionable field errors.
+- [x] Endpoint tests verify shape, alignment, bounds, and one numerical diagnostic.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_analysis_api.py`
-- [ ] `uv run pytest`
+- [x] `uv run pytest tests/test_analysis_api.py`
+- [x] `uv run pytest`
 
 **Dependencies:** Task 2.2
 

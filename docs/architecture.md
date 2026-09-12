@@ -43,7 +43,9 @@ The product starts with two endpoints:
 - `GET /api/health` for container and deployment health.
 - `POST /api/analysis` for one cohesive graph-analysis result.
 
-The analysis endpoint will be added with the first mathematical slice. Graph changes will be debounced, in-flight requests cancelled, and stale responses ignored.
+The analysis endpoint accepts the bounded contract documented in
+[`api.md`](api.md). Graph changes are represented as complete immutable requests;
+in-flight requests are cancelled and stale responses ignored at the frontend boundary.
 
 ## Deployment
 
