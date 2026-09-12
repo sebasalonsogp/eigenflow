@@ -99,7 +99,7 @@ whose tests verify mathematical properties rather than snapshots.
 **Exit gate:** All numerical invariants pass on the curated fixtures, and no math
 module imports FastAPI or frontend concerns.
 
-### Phase 2: Bottleneck end-to-end slice
+### Phase 2: Bottleneck end-to-end slice — complete
 
 **Objective:** Connect the Python model to the browser through one complete,
 compelling experiment.
