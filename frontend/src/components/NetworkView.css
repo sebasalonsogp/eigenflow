@@ -1,0 +1,103 @@
+.network-view {
+  min-height: 392px;
+  margin: 0;
+  padding: 24px 20px 16px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    var(--surface);
+  background-size: 24px 24px;
+}
+
+.network-view svg {
+  display: block;
+  width: 100%;
+}
+
+.network-view--empty {
+  display: grid;
+  place-content: center;
+  gap: 10px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.network-view--empty strong {
+  color: var(--text-strong);
+  font-weight: 560;
+}
+
+.network-edges line {
+  stroke: var(--edge);
+  stroke-linecap: round;
+}
+
+.network-node-source {
+  fill: none;
+  stroke: var(--signal);
+  stroke-dasharray: 3 3;
+  stroke-width: 2;
+}
+
+.network-node {
+  stroke: var(--node-stroke);
+  stroke-width: 2;
+}
+
+.network-nodes text {
+  fill: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-anchor: middle;
+}
+
+.heat-key {
+  display: grid;
+  grid-template-columns: auto minmax(88px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  max-width: 240px;
+  margin: 4px 0 16px auto;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.heat-key-gradient {
+  height: 5px;
+  background: linear-gradient(90deg, #00224e, #7d7c78, #fee838);
+}
+
+.network-summary {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.network-summary span:nth-child(2) {
+  color: var(--signal);
+}
+
+@media (max-width: 560px) {
+  .network-view {
+    min-height: 330px;
+    margin-inline: -12px;
+    padding-inline: 8px;
+  }
+
+  .network-summary {
+    grid-template-columns: repeat(2, 1fr);
+    font-size: 0.6rem;
+  }
+}

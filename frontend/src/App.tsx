@@ -1,26 +1,17 @@
 import { useEffect, useState } from 'react'
 import { getHealth, type HealthState } from './api'
+import { NetworkView } from './components/NetworkView'
+import {
+  BOTTLENECK_DISPLAY_SAMPLE_INDEX,
+  BOTTLENECK_LAYOUT,
+  BOTTLENECK_REQUEST,
+} from './experiments/bottleneck'
+import { useAnalysis, type AnalysisState } from './useAnalysis'
 import './App.css'
-
-const nodes = [
-  [82, 70],
-  [136, 48],
-  [142, 104],
-  [194, 74],
-  [294, 74],
-  [346, 44],
-  [352, 102],
-  [404, 72],
-] as const
-
-const edges = [
-  [0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3],
-  [3, 4],
-  [4, 5], [4, 6], [4, 7], [5, 6], [5, 7], [6, 7],
-] as const
 
 function App() {
   const [health, setHealth] = useState<HealthState>({ status: 'checking' })
+  const analysis = useAnalysis(BOTTLENECK_REQUEST)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -63,46 +54,67 @@ function App() {
           </div>
         </div>
 
-        <figure className="graph-preview">
-          <svg viewBox="0 0 486 150" role="img" aria-labelledby="preview-title preview-description">
-            <title id="preview-title">Two graph communities connected by one bridge</title>
-            <desc id="preview-description">
-              Eight nodes form two dense groups. A single amber edge connects the groups.
-            </desc>
-            {edges.map(([source, target], index) => (
-              <line
-                key={`${source}-${target}`}
-                className={index === 6 ? 'bridge' : undefined}
-                x1={nodes[source][0]}
-                y1={nodes[source][1]}
-                x2={nodes[target][0]}
-                y2={nodes[target][1]}
-              />
-            ))}
-            {nodes.map(([x, y], index) => (
-              <circle key={`${x}-${y}`} cx={x} cy={y} r="10" data-community={index < 4 ? 'left' : 'right'} />
-            ))}
-          </svg>
-          <figcaption>
-            <span>Fast local mixing</span>
-            <span className="bridge-label">Slow bridge</span>
-            <span>Fast local mixing</span>
-          </figcaption>
-        </figure>
+        <div className="experiment-panel">
+          <div className="experiment-label">
+            <span>Experiment 01 · weak bridge</span>
+            <span>Computed sample</span>
+          </div>
+          <AnalysisVisual state={analysis} />
+        </div>
       </section>
 
       <section className="project-intent" aria-labelledby="intent-title">
-        <p className="section-index">01 / Foundation</p>
+        <p className="section-index">01 / Working model</p>
         <div>
-          <h2 id="intent-title">One model. Three coordinated views.</h2>
+          <h2 id="intent-title">Python computes. D3 makes it visible.</h2>
           <p>
-            The scaffold is ready for the graph, spectrum, and diffusion timeline.
-            Each view will be driven by the same Python analysis result so the visual
-            story remains mathematically consistent.
+            The numerical engine validates the graph, constructs its Laplacian,
+            decomposes the spectrum, and solves heat flow. The network above is the
+            first view driven by that single aligned result—not a decorative sketch.
           </p>
         </div>
       </section>
     </main>
+  )
+}
+
+function AnalysisVisual({ state }: { state: AnalysisState }) {
+  if (state.status === 'success') {
+    return (
+      <NetworkView
+        analysis={state.data}
+        positions={BOTTLENECK_LAYOUT}
+        sampleIndex={BOTTLENECK_DISPLAY_SAMPLE_INDEX}
+      />
+    )
+  }
+
+  if (state.status === 'loading') {
+    return (
+      <div className="analysis-state" role="status" aria-busy="true">
+        <span className="analysis-state-mark" aria-hidden="true">λ</span>
+        <strong>Solving the Laplacian system</strong>
+        <span>Validating graph · decomposing spectrum · sampling heat</span>
+      </div>
+    )
+  }
+
+  if (state.status === 'validation-error') {
+    return (
+      <div className="analysis-state analysis-state--error" role="alert">
+        <span className="analysis-state-mark" aria-hidden="true">!</span>
+        <strong>Analysis request rejected</strong>
+        <span>{state.message}</span>
+      </div>
+    )
+  }
+
+  return (
+    <div className="analysis-state analysis-state--error" role="alert">
+      <span className="analysis-state-mark" aria-hidden="true">!</span>
+      <strong>Analysis unavailable</strong>
+      <span>Start the Python API and reload to compute the experiment.</span>
+    </div>
   )
 }
 
