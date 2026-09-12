@@ -20,7 +20,7 @@ test('introduces the spectral diffusion project', async () => {
 
   expect(screen.getByRole('heading', { name: /structure shapes how signals move/i })).toBeVisible()
   expect(await screen.findByText(/numerical engine ready/i)).toBeVisible()
-  expect(await screen.findByRole('img', { name: /heat diffusion on a 2-node graph/i })).toBeVisible()
+  expect(await screen.findByRole('img', { name: /heat diffusion across 2 graph nodes/i })).toBeVisible()
   expect(screen.getByText(/python computes. d3 makes it visible/i)).toBeVisible()
 })
 
