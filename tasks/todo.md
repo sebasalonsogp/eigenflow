@@ -111,7 +111,7 @@ shared by numerical tests and later experiment definitions.
 - [x] Mathematical interfaces are reviewed before HTTP exposure.
 - [x] Production Docker image still builds.
 
-## Phase 2: Bottleneck end-to-end slice
+## Phase 2: Bottleneck end-to-end slice — complete
 
 ### Task 2.1: Implement sampled heat diffusion
 
@@ -220,7 +220,7 @@ whose structure and state come from the backend analysis result.
 
 - [x] `npm test -- --run`
 - [x] `npm run build`
-- [ ] Manual check at desktop and narrow viewport widths.
+- [x] Manual check at desktop and narrow viewport widths.
 
 **Dependencies:** Task 2.4
 
@@ -232,10 +232,10 @@ whose structure and state come from the backend analysis result.
 
 ### Checkpoint B: First working vertical slice
 
-- [ ] Backend and frontend suites pass.
-- [ ] Container returns a bottleneck analysis and renders the real network.
-- [ ] API contract and `nodeOrder` alignment are documented.
-- [ ] Primary view is understandable without setup instructions.
+- [x] Backend and frontend suites pass.
+- [x] Container returns a bottleneck analysis and renders the real network.
+- [x] API contract and `nodeOrder` alignment are documented.
+- [x] Primary view is understandable without setup instructions.
 
 ## Phase 3: Interactive diffusion experience
 
