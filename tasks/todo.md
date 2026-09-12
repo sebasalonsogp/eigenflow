@@ -19,15 +19,15 @@ supported graph input into a canonical internal representation.
 
 **Acceptance criteria:**
 
-- [ ] Accept finite, nonnegative weights and stable unique string node IDs.
-- [ ] Reject self-loops, duplicate undirected edges, unknown endpoints, and graphs
+- [x] Accept finite, nonnegative weights and stable unique string node IDs.
+- [x] Reject self-loops, duplicate undirected edges, unknown endpoints, and graphs
       above 30 nodes with actionable messages.
-- [ ] Produce deterministic `nodeOrder` independent of edge input order.
+- [x] Produce deterministic `nodeOrder` independent of edge input order.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_graph.py`
-- [ ] `uv run ruff check .`
+- [x] `uv run pytest tests/test_graph.py`
+- [x] `uv run ruff check .`
 
 **Dependencies:** Phase 0
 
