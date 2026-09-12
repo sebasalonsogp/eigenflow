@@ -103,37 +103,61 @@ h1 {
   font-size: 1.14rem;
 }
 
-.graph-preview {
-  margin: 0;
-  padding: 26px 20px 18px;
+.experiment-panel {
+  min-width: 0;
+}
+
+.experiment-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.experiment-label span:first-child {
+  color: var(--signal);
+}
+
+.analysis-state {
+  display: grid;
+  min-height: 392px;
+  place-content: center;
+  gap: 10px;
   border: 1px solid var(--line);
+  padding: 32px;
+  color: var(--text-muted);
   background:
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
     var(--surface);
   background-size: 24px 24px;
+  text-align: center;
 }
 
-.graph-preview svg { display: block; width: 100%; }
-.graph-preview line { stroke: var(--edge); stroke-width: 1.5; }
-.graph-preview line.bridge { stroke: var(--signal); stroke-width: 2.5; }
-.graph-preview circle { stroke: var(--node-stroke); stroke-width: 2; }
-.graph-preview circle[data-community='left'] { fill: var(--node-cool); }
-.graph-preview circle[data-community='right'] { fill: var(--node-warm); }
-
-.graph-preview figcaption {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid var(--line);
-  padding-top: 14px;
-  color: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 0.67rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.analysis-state strong {
+  color: var(--text-strong);
+  font-weight: 560;
 }
 
-.bridge-label { color: var(--signal); }
+.analysis-state span:last-child {
+  max-width: 380px;
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.analysis-state-mark {
+  color: var(--signal);
+  font-family: Georgia, serif;
+  font-size: 2rem;
+}
+
+.analysis-state--error .analysis-state-mark {
+  color: var(--warning);
+}
 
 .project-intent {
   display: grid;
@@ -159,7 +183,7 @@ h1 {
 
 @media (max-width: 840px) {
   .hero { grid-template-columns: 1fr; min-height: auto; }
-  .graph-preview { order: -1; }
+  .experiment-panel { order: -1; }
   .project-intent { grid-template-columns: 1fr; }
 }
 
@@ -168,8 +192,7 @@ h1 {
   .topbar { align-items: flex-start; padding: 16px 0; }
   .engine-status { max-width: 150px; justify-content: flex-end; text-align: right; }
   .hero { gap: 42px; padding: 44px 0 56px; }
-  .graph-preview { margin-inline: -12px; padding-inline: 8px; }
-  .graph-preview figcaption { font-size: 0.56rem; }
+  .analysis-state { min-height: 330px; margin-inline: -12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

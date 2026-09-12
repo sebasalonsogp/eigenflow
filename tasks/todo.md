@@ -212,14 +212,14 @@ whose structure and state come from the backend analysis result.
 
 **Acceptance criteria:**
 
-- [ ] Nodes and weighted edges render deterministically with stable labels.
-- [ ] Heat uses a perceptually ordered scale plus a non-color textual summary.
-- [ ] Empty, loading, and error states preserve the page layout.
+- [x] Nodes and weighted edges render deterministically with stable labels.
+- [x] Heat uses a perceptually ordered scale plus a non-color textual summary.
+- [x] Empty, loading, and error states preserve the page layout.
 
 **Verification:**
 
-- [ ] `npm test -- --run`
-- [ ] `npm run build`
+- [x] `npm test -- --run`
+- [x] `npm run build`
 - [ ] Manual check at desktop and narrow viewport widths.
 
 **Dependencies:** Task 2.4
