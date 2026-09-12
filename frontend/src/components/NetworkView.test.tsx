@@ -15,7 +15,7 @@ test('renders weighted graph structure and a non-color heat summary', () => {
     />,
   )
 
-  expect(screen.getByRole('img', { name: /heat diffusion on a 2-node graph/i })).toBeVisible()
+  expect(screen.getByRole('img', { name: /heat diffusion across 2 graph nodes/i })).toBeVisible()
   expect(container.querySelectorAll('[data-node-id]')).toHaveLength(2)
   expect(container.querySelectorAll('[data-edge-id]')).toHaveLength(1)
   expect(screen.getByText('a')).toBeVisible()

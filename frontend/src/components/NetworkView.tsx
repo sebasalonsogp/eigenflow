@@ -59,7 +59,7 @@ export function NetworkView({ analysis, positions, sampleIndex = 0 }: NetworkVie
         role="img"
         aria-labelledby={`${titleId} ${descriptionId}`}
       >
-        <title id={titleId}>Heat diffusion on a {analysis.nodeOrder.length}-node graph</title>
+        <title id={titleId}>Heat diffusion across {analysis.nodeOrder.length} graph nodes</title>
         <desc id={descriptionId}>
           {analysis.graph.edges.length} weighted edges connect the graph. The heat source is
           {' '}{sourceId}; at time {time.toFixed(2)}, {hottestId} is hottest.
