@@ -120,14 +120,14 @@ bounded time grid and initial heat vector.
 
 **Acceptance criteria:**
 
-- [ ] Output samples align with `nodeOrder` and requested times.
-- [ ] Heat is conserved and converges to component-wise equilibrium.
-- [ ] Invalid initial states, times, and diffusion coefficients are rejected.
+- [x] Output samples align with `nodeOrder` and requested times.
+- [x] Heat is conserved and converges to component-wise equilibrium.
+- [x] Invalid initial states, times, and diffusion coefficients are rejected.
 
 **Verification:**
 
-- [ ] `uv run pytest tests/test_diffusion.py`
-- [ ] `uv run ruff check .`
+- [x] `uv run pytest tests/test_diffusion.py`
+- [x] `uv run ruff check .`
 
 **Dependencies:** Task 1.3
 
