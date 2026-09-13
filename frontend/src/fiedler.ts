@@ -38,20 +38,25 @@ export function deriveFiedlerPartition(analysis: SpectralGraph): FiedlerPartitio
     }
   }
 
-  const entries = nodeOrder.map((nodeId, nodeIndex) => {
-    const value = spectrum.eigenvectors[nodeIndex]?.[1]
-    return value === undefined
-      ? undefined
-      : { nodeId, value, group: partitionGroup(value, spectrum.tolerance) }
-  })
-  if (entries.some((entry) => entry === undefined)) {
+  const values = nodeOrder.map((_, nodeIndex) => spectrum.eigenvectors[nodeIndex]?.[1])
+  if (values.some((value) => value === undefined)) {
     return {
       status: 'unavailable',
       message: 'The returned spectrum does not contain a complete second eigenvector.',
     }
   }
 
-  return { status: 'available', entries: entries as FiedlerEntry[] }
+  const fiedlerValues = values.filter((value): value is number => value !== undefined)
+  const firstPartitionValue = fiedlerValues.find(
+    (value) => Math.abs(value) > spectrum.tolerance,
+  )
+  const orientation = firstPartitionValue !== undefined && firstPartitionValue < 0 ? -1 : 1
+  const entries = nodeOrder.map((nodeId, nodeIndex) => {
+    const value = fiedlerValues[nodeIndex] * orientation
+    return { nodeId, value, group: partitionGroup(value, spectrum.tolerance) }
+  })
+
+  return { status: 'available', entries }
 }
 
 function partitionGroup(value: number, tolerance: number): PartitionGroup {
