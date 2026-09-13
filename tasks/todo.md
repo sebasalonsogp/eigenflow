@@ -543,14 +543,14 @@ the running production image in CI.
 
 **Acceptance criteria:**
 
-- [ ] Results and test environment are documented reproducibly.
-- [ ] Primary interaction remains responsive at the supported boundary.
-- [ ] Any optimization is driven by a measured bottleneck.
+- [x] Results and test environment are documented reproducibly.
+- [x] Primary interaction remains responsive at the supported boundary.
+- [x] Any optimization is driven by a measured bottleneck.
 
 **Verification:**
 
-- [ ] Backend benchmark and browser performance capture are recorded.
-- [ ] Production build size is reviewed.
+- [x] Backend benchmark and browser performance capture are recorded.
+- [x] Production build size is reviewed.
 
 **Dependencies:** Task 6.2
 
