@@ -83,6 +83,10 @@ test('submits changed bottleneck parameters and resets the controls', async () =
     expect(latestRequest.edges.find((edge: { weight: number }) => edge.weight < 1).weight).toBe(0.8)
   })
 
+  fireEvent.click(screen.getByRole('button', { name: /01 bottleneck/i }))
+  expect(screen.getByRole('slider', { name: /bridge strength/i })).toHaveValue('0.8')
+  expect(screen.getByRole('combobox', { name: /heat source/i })).toHaveValue('right-2')
+
   fireEvent.click(screen.getByRole('button', { name: /reset experiment/i }))
   expect(screen.getByRole('slider', { name: /bridge strength/i })).toHaveValue('0.1')
   expect(screen.getByRole('combobox', { name: /heat source/i })).toHaveValue('left-0')
