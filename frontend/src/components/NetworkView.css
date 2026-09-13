@@ -89,6 +89,14 @@
   background: linear-gradient(90deg, #00224e, #7d7c78, #fee838);
 }
 
+.heat-key small {
+  grid-column: 1 / -1;
+  color: var(--text-faint);
+  font-size: inherit;
+  text-align: right;
+  text-transform: none;
+}
+
 .network-summary {
   display: grid;
   grid-template-columns: repeat(4, auto);

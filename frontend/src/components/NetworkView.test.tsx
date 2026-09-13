@@ -27,6 +27,7 @@ test('renders weighted graph structure and a non-color heat summary', () => {
   expect(screen.getByText(/hottest a/i)).toBeVisible()
   expect(screen.getByText(/t = 1.00/i)).toBeVisible()
   expect(screen.getByText(/total heat 1.000/i)).toBeVisible()
+  expect(screen.getByLabelText(/square-root color spacing/i)).toBeVisible()
 })
 
 test('preserves the visualization frame when no graph data is available', () => {

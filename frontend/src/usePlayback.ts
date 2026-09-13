@@ -17,7 +17,7 @@ export interface PlaybackState {
   seek: (time: number) => void
 }
 
-const DEFAULT_DURATION_MILLISECONDS = 8_000
+const DEFAULT_DURATION_MILLISECONDS = 16_000
 
 export function usePlayback(
   times: number[],

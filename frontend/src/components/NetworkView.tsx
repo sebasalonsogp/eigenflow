@@ -3,6 +3,7 @@ import { useId } from 'react'
 import type { AnalysisResponse } from '../api'
 import type { DiffusionFrame } from '../diffusionFrame'
 import type { FiedlerEntry } from '../fiedler'
+import { expandHeatForColor } from '../heatEncoding'
 import './NetworkView.css'
 
 export interface NodePosition {
@@ -45,7 +46,7 @@ export function NetworkView({
   const hottestId = analysis.nodeOrder[hottestIndex]
   const maximumInitialHeat = Math.max(...analysis.diffusion.initialState, 1)
   const maximumWeight = Math.max(...analysis.graph.edges.map((edge) => edge.weight), 1)
-  const heatColor = scaleSequential(interpolateCividis).domain([0, maximumInitialHeat])
+  const heatColor = scaleSequential(interpolateCividis).domain([0, 1])
   const edgeWidth = scaleLinear().domain([0, maximumWeight]).range([1, 3.25])
   const descriptionId = `${titleId}-description`
 
@@ -98,17 +99,25 @@ export function NetworkView({
               transform={`translate(${node.position.x} ${node.position.y})`}
             >
               {node.id === sourceId && <circle className="network-node-source" r="17" />}
-              <circle className="network-node" r="11" fill={heatColor(node.heat)} />
+              <circle
+                className="network-node"
+                r="11"
+                fill={heatColor(expandHeatForColor(node.heat, maximumInitialHeat))}
+              />
               <text y="27">{node.id}</text>
             </g>
           ))}
         </g>
       </svg>
 
-      <div className="heat-key" aria-label="Heat scale from cooler to warmer">
+      <div
+        className="heat-key"
+        aria-label="Heat scale from cooler to warmer with square-root color spacing"
+      >
         <span>Cooler</span>
         <span className="heat-key-gradient" aria-hidden="true" />
         <span>Warmer</span>
+        <small>√ color scale keeps low heat visible</small>
       </div>
 
       <figcaption
