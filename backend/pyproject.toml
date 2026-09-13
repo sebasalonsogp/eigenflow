@@ -1,6 +1,6 @@
 [project]
 name = "eigenflow-api"
-version = "0.1.0"
+version = "1.0.0"
 description = "Scientific-computing API for Eigenflow's spectral graph visualizations"
 readme = "README.md"
 authors = [

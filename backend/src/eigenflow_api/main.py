@@ -9,6 +9,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from eigenflow_api import __version__
 from eigenflow_api.analysis import AnalysisValidationError, analyze_graph
 from eigenflow_api.math.diffusion import DiffusionValidationError
 from eigenflow_api.math.graph import Edge, GraphValidationError
@@ -17,7 +18,7 @@ from eigenflow_api.schemas import AnalysisRequest, AnalysisResponse, HealthRespo
 app = FastAPI(
     title="Eigenflow API",
     description="Scientific-computing backend for interactive spectral diffusion.",
-    version="0.1.0",
+    version=__version__,
 )
 app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
 

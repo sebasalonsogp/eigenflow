@@ -36,3 +36,13 @@ async def test_responses_include_browser_security_headers() -> None:
     assert response.headers["referrer-policy"] == "no-referrer"
     assert response.headers["x-content-type-options"] == "nosniff"
     assert response.headers["x-frame-options"] == "DENY"
+
+
+@pytest.mark.anyio
+async def test_openapi_reports_release_version() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        response = await client.get("/openapi.json")
+
+    assert response.status_code == 200
+    assert response.json()["info"]["version"] == "1.0.0"
