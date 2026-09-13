@@ -26,6 +26,24 @@ test('introduces the spectral diffusion project', async () => {
   expect(screen.getByText(/python computes. d3 makes it visible/i)).toBeVisible()
 })
 
+test('offers a keyboard shortcut to the interactive experiment', () => {
+  vi.stubGlobal('fetch', vi.fn().mockImplementation((url: string) => {
+    if (url === '/api/health') return new Promise(() => undefined)
+    return new Promise(() => undefined)
+  }))
+
+  render(<App />)
+
+  expect(screen.getByRole('link', { name: /skip to interactive experiment/i })).toHaveAttribute(
+    'href',
+    '#experiment-workspace',
+  )
+  expect(screen.getByRole('region', { name: /interactive experiment/i })).toHaveAttribute(
+    'tabindex',
+    '-1',
+  )
+})
+
 test('holds the visualization layout while analysis is loading', () => {
   vi.stubGlobal('fetch', vi.fn().mockImplementation((url: string) => {
     if (url === '/api/health') return Promise.resolve({

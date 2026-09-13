@@ -14,7 +14,7 @@
 }
 
 .mode-toggle button {
-  min-height: 34px;
+  min-height: var(--control-height);
   border: 1px solid var(--line-strong);
   border-radius: 0;
   padding: 0 11px;

@@ -3,6 +3,25 @@
   margin: 0 auto;
 }
 
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: 12px;
+  left: 12px;
+  padding: 10px 14px;
+  color: var(--background);
+  background: var(--signal);
+  font-weight: 650;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 16px));
+}
+
+.skip-link:focus {
+  outline: 2px solid var(--text-strong);
+  outline-offset: 3px;
+  transform: translateY(0);
+}
+
 .topbar {
   display: flex;
   align-items: center;
@@ -105,6 +124,11 @@ h1 {
 
 .experiment-panel {
   min-width: 0;
+}
+
+.experiment-panel:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 6px;
 }
 
 .experiment-label {

@@ -46,7 +46,7 @@ export function ModeToggle({ mode, partition, onModeChange }: ModeToggleProps) {
       )}
 
       {partition.status === 'available' && activeMode === 'partition' && (
-        <dl className="partition-membership" role="group" aria-label="Fiedler partition membership">
+        <dl className="partition-membership" aria-label="Fiedler partition membership">
           {(['negative', 'boundary', 'positive'] as const).map((group) => {
             const nodeIds = partition.entries
               .filter((entry) => entry.group === group)

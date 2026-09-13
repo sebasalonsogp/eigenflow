@@ -80,6 +80,35 @@ test('drives color-independent details from one explicit diffusion frame', () =>
   expect(screen.getByText(/total heat 1.000/i)).toBeVisible()
 })
 
+test('exposes every current node value without relying on the heat colors', () => {
+  render(
+    <NetworkView
+      analysis={ANALYSIS_FIXTURE}
+      positions={{}}
+      frame={{ time: 0.5, state: [0.25, 0.75] }}
+    />,
+  )
+
+  const values = screen.getByRole('table', { name: /node heat values at time 0.50/i })
+  expect(values).toHaveTextContent(/node a/i)
+  expect(values).toHaveTextContent('0.250')
+  expect(values).toHaveTextContent(/node b/i)
+  expect(values).toHaveTextContent('0.750')
+})
+
+test('presents floating-point noise as zero in the accessible node values', () => {
+  render(
+    <NetworkView
+      analysis={ANALYSIS_FIXTURE}
+      positions={{}}
+      frame={{ time: 0, state: [-0.0001, 1.0001] }}
+    />,
+  )
+
+  expect(screen.getByRole('row', { name: /node a/i })).toHaveTextContent('0.000')
+  expect(screen.getByRole('row', { name: /node a/i })).not.toHaveTextContent('-0.000')
+})
+
 test('silences live summary announcements during automatic playback', () => {
   render(
     <NetworkView
