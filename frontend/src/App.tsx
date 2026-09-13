@@ -1,17 +1,32 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { getHealth, type HealthState } from './api'
+import { BottleneckControls } from './components/BottleneckControls'
 import { NetworkView } from './components/NetworkView'
 import {
   BOTTLENECK_DISPLAY_SAMPLE_INDEX,
   BOTTLENECK_LAYOUT,
   BOTTLENECK_REQUEST,
+  createBottleneckRequest,
+  DEFAULT_BRIDGE_WEIGHT,
+  DEFAULT_HEAT_SOURCE,
+  type BottleneckParameters,
 } from './experiments/bottleneck'
 import { useAnalysis, type AnalysisState } from './useAnalysis'
 import './App.css'
 
+const DEFAULT_PARAMETERS: BottleneckParameters = {
+  bridgeWeight: DEFAULT_BRIDGE_WEIGHT,
+  heatSource: DEFAULT_HEAT_SOURCE,
+}
+
 function App() {
   const [health, setHealth] = useState<HealthState>({ status: 'checking' })
-  const analysis = useAnalysis(BOTTLENECK_REQUEST)
+  const [parameters, setParameters] = useState(DEFAULT_PARAMETERS)
+  const request = useMemo(
+    () => createBottleneckRequest(parameters),
+    [parameters],
+  )
+  const analysis = useAnalysis(request, 120)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -56,9 +71,21 @@ function App() {
 
         <div className="experiment-panel">
           <div className="experiment-label">
-            <span>Experiment 01 · weak bridge</span>
-            <span>Computed sample</span>
+            <span>Experiment 01 · bottleneck</span>
+            <span>Live simulation</span>
           </div>
+          <BottleneckControls
+            nodeIds={BOTTLENECK_REQUEST.nodes.map((node) => node.id)}
+            heatSource={parameters.heatSource}
+            bridgeWeight={parameters.bridgeWeight}
+            onHeatSourceChange={(heatSource) => {
+              setParameters((current) => ({ ...current, heatSource }))
+            }}
+            onBridgeWeightChange={(bridgeWeight) => {
+              setParameters((current) => ({ ...current, bridgeWeight }))
+            }}
+            onReset={() => setParameters(DEFAULT_PARAMETERS)}
+          />
           <AnalysisVisual state={analysis} />
         </div>
       </section>
