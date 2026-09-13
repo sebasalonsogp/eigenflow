@@ -22,6 +22,10 @@ test('plays, pauses, scrubs, and resets with an explicit time value', () => {
   )
 
   expect(screen.getByText('t = 1.25')).toBeVisible()
+  expect(screen.getByRole('slider', { name: /simulation time/i })).toHaveAttribute(
+    'step',
+    '0.01',
+  )
   fireEvent.click(screen.getByRole('button', { name: /^play$/i }))
   expect(onPlay).toHaveBeenCalledOnce()
 

@@ -79,3 +79,19 @@ test('drives color-independent details from one explicit diffusion frame', () =>
   expect(screen.getByText(/hottest b/i)).toBeVisible()
   expect(screen.getByText(/total heat 1.000/i)).toBeVisible()
 })
+
+test('silences live summary announcements during automatic playback', () => {
+  render(
+    <NetworkView
+      analysis={ANALYSIS_FIXTURE}
+      positions={{}}
+      frame={{ time: 0.5, state: [0.75, 0.25] }}
+      announceChanges={false}
+    />,
+  )
+
+  expect(screen.getByText(/total heat 1.000/i).closest('figcaption')).toHaveAttribute(
+    'aria-live',
+    'off',
+  )
+})

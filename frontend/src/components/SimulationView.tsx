@@ -23,6 +23,7 @@ export function SimulationView({ analysis, positions }: SimulationViewProps) {
         analysis={analysis}
         positions={positions}
         frame={frame}
+        announceChanges={!playback.isPlaying}
       />
       <PlaybackControls
         currentTime={playback.currentTime}

@@ -13,12 +13,18 @@ interface NetworkViewProps {
   analysis: AnalysisResponse
   positions: Record<string, NodePosition>
   frame: DiffusionFrame
+  announceChanges?: boolean
 }
 
 const VIEWBOX_WIDTH = 520
 const VIEWBOX_HEIGHT = 224
 
-export function NetworkView({ analysis, positions, frame }: NetworkViewProps) {
+export function NetworkView({
+  analysis,
+  positions,
+  frame,
+  announceChanges = true,
+}: NetworkViewProps) {
   const titleId = `${useId().replaceAll(':', '')}-title`
   if (analysis.nodeOrder.length === 0 || frame.state.length === 0) {
     return (
@@ -99,7 +105,10 @@ export function NetworkView({ analysis, positions, frame }: NetworkViewProps) {
         <span>Warmer</span>
       </div>
 
-      <figcaption className="network-summary" aria-live="polite">
+      <figcaption
+        className="network-summary"
+        aria-live={announceChanges ? 'polite' : 'off'}
+      >
         <span>t = {time.toFixed(2)}</span>
         <span>Source {sourceId}</span>
         <span>Hottest {hottestId}</span>

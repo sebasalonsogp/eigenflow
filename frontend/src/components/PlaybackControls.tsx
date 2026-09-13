@@ -23,8 +23,6 @@ export function PlaybackControls({
   onSeek,
   onReset,
 }: PlaybackControlsProps) {
-  const timeStep = Math.max((endTime - startTime) / 200, 0.01)
-
   return (
     <section className="playback-controls" aria-label="Diffusion playback">
       <button
@@ -49,7 +47,7 @@ export function PlaybackControls({
           type="range"
           min={startTime}
           max={endTime}
-          step={timeStep}
+          step={0.01}
           value={currentTime}
           onChange={(event) => onSeek(Number(event.target.value))}
         />
