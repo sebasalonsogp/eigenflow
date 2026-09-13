@@ -270,13 +270,13 @@ reset, and time-scrubbing controls.
 
 **Acceptance criteria:**
 
-- [ ] Playback performs no per-frame network requests.
-- [ ] Scrubbing and pause produce deterministic displayed values.
-- [ ] Reduced-motion mode disables automatic animation without removing analysis.
+- [x] Playback performs no per-frame network requests.
+- [x] Scrubbing and pause produce deterministic displayed values.
+- [x] Reduced-motion mode disables automatic animation without removing analysis.
 
 **Verification:**
 
-- [ ] `npm test -- --run`
+- [x] `npm test -- --run`
 - [ ] Browser network panel confirms no per-frame API traffic.
 
 **Dependencies:** Task 3.1
