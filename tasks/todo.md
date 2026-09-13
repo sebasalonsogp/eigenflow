@@ -316,7 +316,7 @@ from the same interpolated frame.
 - [x] Interaction remains smooth at 30 nodes and under rapid input.
 - [x] Docker image passes API and page smoke checks.
 
-## Phase 4: Spectral explanation layer
+## Phase 4: Spectral explanation layer — complete
 
 ### Task 4.1: Add the spectrum view
 
@@ -387,21 +387,14 @@ partition while preserving the heat view as the default.
 
 **Estimated scope:** Small
 
-### Task 4.4: Add the optional matrix inspector
+### Task 4.4: Add the optional matrix inspector — omitted
 
 **Description:** Add a collapsed inspection panel for `A`, `D`, and `L`; omit the
 feature if Checkpoint C2 shows it distracts from the primary story.
 
-**Acceptance criteria:**
-
-- [ ] Matrix headings and rows identify the shared `nodeOrder`.
-- [ ] Values remain readable at the 30-node boundary through scroll or reduction.
-- [ ] Inspector is absent from the initial visual hierarchy until opened.
-
-**Verification:**
-
-- [ ] Component tests verify matrix selection and alignment.
-- [ ] Manual mobile overflow and keyboard test.
+**Decision:** Omitted at Checkpoint C2. The synchronized network, spectrum, and
+computed explanation already communicate the central result; an additional matrix
+surface would add density without improving the recruiter-facing story.
 
 **Dependencies:** Task 4.3 and explicit Checkpoint C2 approval
 
@@ -414,7 +407,7 @@ feature if Checkpoint C2 shows it distracts from the primary story.
 
 - [x] Network, playback, spectrum, and explanation stay synchronized.
 - [x] A reviewer can explain the bridge/`lambda_2`/mixing relationship after use.
-- [ ] Matrix inspector is retained only if it strengthens that understanding.
+- [x] Matrix inspector is omitted because it does not strengthen that understanding.
 
 ## Phase 5: Curated comparison experiments
 
