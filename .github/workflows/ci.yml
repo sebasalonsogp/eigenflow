@@ -97,6 +97,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
+      - name: Test container smoke probe
+        run: python3 -m unittest scripts.test_container_smoke
+
       - name: Build and start production container
         run: docker compose up --detach --build
 

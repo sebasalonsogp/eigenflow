@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 import os
 import time
-import urllib.error
 import urllib.request
 from typing import Any
 
@@ -45,7 +44,7 @@ def _wait_until_ready() -> dict[str, Any]:
             last_error = RuntimeError(
                 f"GET /api/health returned status {status} with body {health!r}"
             )
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
+        except (OSError, json.JSONDecodeError) as error:
             last_error = error
         time.sleep(1)
 
