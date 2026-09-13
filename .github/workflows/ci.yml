@@ -65,9 +65,9 @@ jobs:
         working-directory: frontend
         run: npm test
 
-      - name: Build frontend
+      - name: Build frontend and enforce bundle budget
         working-directory: frontend
-        run: npm run build
+        run: npm run size
 
       - name: Install Chromium
         working-directory: frontend
@@ -97,8 +97,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - name: Test container smoke probe
-        run: python3 -m unittest scripts.test_container_smoke
+      - name: Test operational scripts
+        run: python3 -m unittest scripts.test_container_smoke scripts.test_benchmark_analysis
 
       - name: Build and start production container
         run: docker compose up --detach --build

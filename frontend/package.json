@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "size": "npm run build && size-limit",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:watch": "vitest",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
+    "@size-limit/file": "^13.1.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@types/d3": "^7.4.3",
@@ -29,8 +31,21 @@
     "axe-core": "^4.13.0",
     "jsdom": "^30.0.1",
     "oxlint": "^1.81.0",
+    "size-limit": "^13.1.1",
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
     "vitest": "^5.0.0"
-  }
+  },
+  "size-limit": [
+    {
+      "name": "JavaScript",
+      "path": "dist/assets/*.js",
+      "limit": "105 kB"
+    },
+    {
+      "name": "CSS",
+      "path": "dist/assets/*.css",
+      "limit": "5 kB"
+    }
+  ]
 }
