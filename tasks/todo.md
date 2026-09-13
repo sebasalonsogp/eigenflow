@@ -465,14 +465,14 @@ centrality through the same simulation system.
 
 **Acceptance criteria:**
 
-- [ ] Source choice is limited to an intentional hub-versus-leaf comparison.
-- [ ] Prompt and takeaway distinguish structural position from initial heat amount.
-- [ ] Shared views require no star-specific rendering branches.
+- [x] Source choice is limited to an intentional hub-versus-leaf comparison.
+- [x] Prompt and takeaway distinguish structural position from initial heat amount.
+- [x] Shared views require no star-specific rendering branches.
 
 **Verification:**
 
-- [ ] Numerical fixture and frontend interaction tests pass.
-- [ ] Manual hub/leaf comparison check.
+- [x] Numerical fixture and frontend interaction tests pass.
+- [x] Manual hub/leaf comparison check.
 
 **Dependencies:** Task 5.1
 
@@ -483,9 +483,9 @@ centrality through the same simulation system.
 
 ### Checkpoint D: MVP feature complete
 
-- [ ] Each experiment has one question, one primary control, and one takeaway.
-- [ ] Experiment switching has no stale state or requests.
-- [ ] Full suites and Docker smoke check pass.
+- [x] Each experiment has one question, one primary control, and one takeaway.
+- [x] Experiment switching has no stale state or requests.
+- [x] Full suites and Docker smoke check pass.
 
 ## Phase 6: Portfolio finish and release
 
