@@ -1,9 +1,11 @@
 import { BOTTLENECK_EXPERIMENT } from './bottleneck'
 import { PATH_COMPLETE_EXPERIMENT } from './pathComplete'
+import { STAR_EXPERIMENT } from './star'
 
 export const EXPERIMENTS = {
   bottleneck: BOTTLENECK_EXPERIMENT,
   'path-complete': PATH_COMPLETE_EXPERIMENT,
+  star: STAR_EXPERIMENT,
 } as const
 
 export type ExperimentId = keyof typeof EXPERIMENTS

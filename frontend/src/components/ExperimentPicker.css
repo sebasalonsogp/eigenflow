@@ -1,7 +1,7 @@
 .experiment-picker {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
   align-items: center;
   margin-bottom: 14px;
   border-block: 1px solid var(--line);
@@ -9,7 +9,8 @@
 }
 
 .experiment-picker-tabs {
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .experiment-picker button {
@@ -46,13 +47,13 @@
 }
 
 .experiment-question {
-  justify-self: end;
+  justify-self: start;
   max-width: 510px;
   margin: 0;
   color: var(--text-muted);
   font-size: 0.75rem;
   line-height: 1.5;
-  text-align: right;
+  text-align: left;
 }
 
 .experiment-question span {
@@ -65,20 +66,7 @@
 }
 
 @media (max-width: 760px) {
-  .experiment-picker {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .experiment-picker-tabs {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .experiment-question {
-    justify-self: start;
-    text-align: left;
-  }
+  .experiment-picker-tabs { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 420px) {

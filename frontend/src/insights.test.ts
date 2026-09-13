@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { buildBottleneckInsight, buildTopologyComparisonInsight } from './insights'
+import {
+  buildBottleneckInsight,
+  buildStarInsight,
+  buildTopologyComparisonInsight,
+} from './insights'
 import { ANALYSIS_FIXTURE } from './test/analysisFixture'
 
 function insightFor(bridgeWeight: number, algebraicConnectivity: number) {
@@ -79,5 +83,39 @@ describe('buildTopologyComparisonInsight', () => {
     expect(insight.headline).toBe('Every node talks to every other.')
     expect(insight.observation).toMatch(/λ₂ = 6.000/i)
     expect(insight.interpretation).toMatch(/rapid global mixing/i)
+  })
+})
+
+describe('buildStarInsight', () => {
+  it('explains the hub as a symmetric initial condition', () => {
+    const insight = buildStarInsight({
+      heatSource: 'hub',
+      spectrum: {
+        ...ANALYSIS_FIXTURE.spectrum,
+        algebraicConnectivity: 1,
+      },
+      diagnostics: ANALYSIS_FIXTURE.diagnostics,
+    })
+
+    expect(insight.headline).toBe('The hub spreads heat symmetrically.')
+    expect(insight.observation).toMatch(/all five leaves are one edge away/i)
+    expect(insight.interpretation).toMatch(/λ₂ = 1.000/i)
+    expect(insight.interpretation).toMatch(/initial condition/i)
+  })
+
+  it('explains the leaf as a directional transient on the same spectrum', () => {
+    const insight = buildStarInsight({
+      heatSource: 'leaf-0',
+      spectrum: {
+        ...ANALYSIS_FIXTURE.spectrum,
+        algebraicConnectivity: 1,
+      },
+      diagnostics: ANALYSIS_FIXTURE.diagnostics,
+    })
+
+    expect(insight.headline).toBe('A leaf creates a directional transient.')
+    expect(insight.observation).toMatch(/two edges away through the hub/i)
+    expect(insight.interpretation).toMatch(/does not change the spectrum/i)
+    expect(insight.limitation).toMatch(/graph distance/i)
   })
 })

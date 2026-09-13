@@ -1,5 +1,6 @@
 import type { AnalysisResponse } from './api'
 import type { ComparisonTopology } from './experiments/pathComplete'
+import type { StarHeatSource } from './experiments/star'
 
 export type BottleneckRegime = 'weak' | 'balanced' | 'strong'
 
@@ -19,6 +20,8 @@ export interface TopologyComparisonInsight {
   verification: string
   limitation: string
 }
+
+export type StarInsight = TopologyComparisonInsight
 
 interface BottleneckInsightInput {
   bridgeWeight: number
@@ -89,6 +92,43 @@ export function buildTopologyComparisonInsight({
     interpretation: 'The much larger spectral gap rapidly damps every non-constant mode, producing rapid global mixing.',
     verification: numericalVerification(residual, conservation),
     limitation: 'The comparison holds the same six nodes and source, with the same edge weights and time samples; topology is the controlled difference.',
+  }
+}
+
+export function buildStarInsight({
+  heatSource,
+  spectrum,
+  diagnostics,
+}: {
+  heatSource: StarHeatSource
+  spectrum: AnalysisResponse['spectrum']
+  diagnostics: AnalysisResponse['diagnostics']
+}): StarInsight {
+  const lambdaTwo = spectrum.algebraicConnectivity === null
+    ? 'not defined'
+    : spectrum.algebraicConnectivity.toFixed(3)
+  const verification = numericalVerification(
+    formatDiagnostic(diagnostics.maxEigenpairResidual),
+    formatDiagnostic(diagnostics.maxHeatConservationError),
+  )
+  const limitation = 'One edge and two edges describe graph distance, not a discrete waiting period; continuous heat diffusion is positive throughout a connected graph for every t > 0.'
+
+  if (heatSource === 'hub') {
+    return {
+      headline: 'The hub spreads heat symmetrically.',
+      observation: 'With heat placed at the hub, all five leaves are one edge away and receive equal heat throughout the simulation.',
+      interpretation: `The fixed graph reports λ₂ = ${lambdaTwo}. Changing the initial condition alters the coefficients on its eigenmodes, not their decay rates.`,
+      verification,
+      limitation,
+    }
+  }
+
+  return {
+    headline: 'A leaf creates a directional transient.',
+    observation: 'With heat placed at leaf-0, the hub is one edge away while every other leaf is two edges away through the hub.',
+    interpretation: `Selecting a different source does not change the spectrum or λ₂ = ${lambdaTwo}; it changes how the initial condition projects onto the fixed eigenmodes.`,
+    verification,
+    limitation,
   }
 }
 

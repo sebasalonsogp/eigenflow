@@ -1,8 +1,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, expect, test, vi } from 'vitest'
 import App from './App'
-import type { AnalysisRequest, AnalysisResponse } from './api'
+import type { AnalysisRequest } from './api'
 import { ANALYSIS_FIXTURE } from './test/analysisFixture'
+import { analysisForRequest } from './test/analysisForRequest'
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -209,7 +210,7 @@ test('compares path and complete topology without carrying obsolete experiment s
       ok: true,
       status: 200,
       json: async () => isComparison
-        ? comparisonAnalysis(request)
+        ? analysisForRequest(request)
         : ANALYSIS_FIXTURE,
     })
   }))
@@ -255,43 +256,60 @@ test('compares path and complete topology without carrying obsolete experiment s
   )
 })
 
-function comparisonAnalysis(request: AnalysisRequest): AnalysisResponse {
-  const size = request.nodes.length
-  const isComplete = request.edges.length === 15
-  const initialState = request.nodes.map((_, index) => index === 0 ? 1 : 0)
-  const identity = request.nodes.map((_, row) => (
-    request.nodes.map((__, column) => row === column ? 1 : 0)
-  ))
-  const zeroMatrix = request.nodes.map(() => request.nodes.map(() => 0))
+test('compares hub and leaf sources without changing the star graph', async () => {
+  const analysisRequests: AnalysisRequest[] = []
+  vi.stubGlobal('fetch', vi.fn().mockImplementation((url: string, options?: RequestInit) => {
+    if (url === '/api/health') return Promise.resolve({
+      ok: true,
+      status: 200,
+      json: async () => ({ status: 'ok', service: 'eigenflow-api' }),
+    })
 
-  return {
-    nodeOrder: request.nodes.map((node) => node.id),
-    graph: { nodes: request.nodes, edges: request.edges },
-    matrices: {
-      adjacency: zeroMatrix,
-      degree: zeroMatrix,
-      laplacian: zeroMatrix,
-    },
-    spectrum: {
-      eigenvalues: isComplete ? [0, 6, 6, 6, 6, 6] : [0, 0.268, 1, 2, 3, 4],
-      eigenvectors: identity,
-      residualNorms: Array.from({ length: size }, () => 0),
-      zeroEigenvalueMultiplicity: 1,
-      algebraicConnectivity: isComplete ? 6 : 0.268,
-      degenerateEigenspaces: isComplete
-        ? [{ eigenvalue: 6, indices: [1, 2, 3, 4, 5], multiplicity: 5 }]
-        : [],
-      tolerance: 1e-10,
-    },
-    diffusion: {
-      times: request.times,
-      states: request.times.map(() => initialState),
-      initialState,
-      diffusionCoefficient: request.diffusionCoefficient,
-    },
-    diagnostics: {
-      maxEigenpairResidual: 0,
-      maxHeatConservationError: 0,
-    },
-  }
-}
+    const request = JSON.parse(options?.body as string) as AnalysisRequest
+    analysisRequests.push(request)
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      json: async () => request.nodes[0]?.id === 'hub'
+        ? analysisForRequest(request)
+        : ANALYSIS_FIXTURE,
+    })
+  }))
+  render(<App />)
+  await screen.findByRole('img', { name: /heat diffusion across 2 graph nodes/i })
+
+  fireEvent.click(screen.getByRole('button', { name: /03 hub vs leaf/i }))
+
+  expect(await screen.findByRole('heading', {
+    name: /hub spreads heat symmetrically/i,
+  })).toBeVisible()
+  expect(screen.getByLabelText(/fixed network six-node star/i)).toBeVisible()
+  expect(screen.getByRole('button', { name: /^hub$/i })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
+  const hubRequest = analysisRequests.at(-1)
+  expect(hubRequest?.nodes).toHaveLength(6)
+  expect(hubRequest?.edges).toHaveLength(5)
+  expect(hubRequest?.heatSource).toBe('hub')
+
+  fireEvent.change(screen.getByRole('slider', { name: /simulation time/i }), {
+    target: { value: '0.5' },
+  })
+  fireEvent.click(screen.getByRole('button', { name: /^leaf$/i }))
+
+  expect(await screen.findByRole('heading', {
+    name: /leaf creates a directional transient/i,
+  })).toBeVisible()
+  const leafRequest = analysisRequests.at(-1)
+  expect(leafRequest).toEqual({ ...hubRequest, heatSource: 'leaf-0' })
+  expect(screen.getByRole('slider', { name: /simulation time/i })).toHaveValue('0')
+  expect(screen.getByRole('button', { name: /fiedler partition/i })).toBeDisabled()
+
+  fireEvent.click(screen.getByRole('button', { name: /01 bottleneck/i }))
+  fireEvent.click(screen.getByRole('button', { name: /03 hub vs leaf/i }))
+  expect(await screen.findByRole('button', { name: /^hub$/i })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
+})
