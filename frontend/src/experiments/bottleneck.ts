@@ -1,4 +1,5 @@
 import type { AnalysisRequest, GraphEdge } from '../api'
+import type { ExperimentDefinition } from './types'
 
 const COMMUNITY_SIZE = 4
 const leftNodes = Array.from({ length: COMMUNITY_SIZE }, (_, index) => `left-${index}`)
@@ -53,5 +54,30 @@ export const BOTTLENECK_LAYOUT: Record<string, { x: number; y: number }> = {
   'right-2': { x: 368, y: 166 },
   'right-3': { x: 434, y: 112 },
 }
+
+export const BOTTLENECK_EXPERIMENT = {
+  id: 'bottleneck',
+  sequence: '01',
+  label: 'Bottleneck',
+  question: 'How much can one weak edge slow global diffusion?',
+  takeaway: 'A weak bridge compresses algebraic connectivity and preserves a slow global diffusion mode.',
+  defaultHeatSource: DEFAULT_HEAT_SOURCE,
+  defaultParameters: {
+    bridgeWeight: DEFAULT_BRIDGE_WEIGHT,
+    heatSource: DEFAULT_HEAT_SOURCE,
+  },
+  control: {
+    kind: 'bridge-strength',
+    label: 'Bridge strength',
+    minimum: MIN_BRIDGE_WEIGHT,
+    maximum: MAX_BRIDGE_WEIGHT,
+    step: BRIDGE_WEIGHT_STEP,
+    defaultValue: DEFAULT_BRIDGE_WEIGHT,
+    minimumLabel: 'Weak',
+    maximumLabel: 'Strong',
+  },
+  createRequest: createBottleneckRequest,
+  positions: BOTTLENECK_LAYOUT,
+} satisfies ExperimentDefinition<BottleneckParameters>
 
 export const BOTTLENECK_DISPLAY_SAMPLE_INDEX = 2
