@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildBottleneckInsight } from './insights'
+import { buildBottleneckInsight, buildTopologyComparisonInsight } from './insights'
 import { ANALYSIS_FIXTURE } from './test/analysisFixture'
 
 function insightFor(bridgeWeight: number, algebraicConnectivity: number) {
@@ -47,5 +47,37 @@ describe('buildBottleneckInsight', () => {
     expect(insight.verification).toMatch(/floating-point consistency/i)
     expect(insight.verification).toMatch(/not model fit/i)
     expect(insight.limitation).toMatch(/source and higher modes/i)
+  })
+})
+
+describe('buildTopologyComparisonInsight', () => {
+  it('connects the path spectral gap to slow long-distance mixing', () => {
+    const insight = buildTopologyComparisonInsight({
+      topology: 'path',
+      spectrum: {
+        ...ANALYSIS_FIXTURE.spectrum,
+        algebraicConnectivity: 0.268,
+      },
+      diagnostics: ANALYSIS_FIXTURE.diagnostics,
+    })
+
+    expect(insight.headline).toBe('Local links make distance matter.')
+    expect(insight.observation).toMatch(/λ₂ = 0.268/i)
+    expect(insight.interpretation).toMatch(/slow long-distance mixing/i)
+  })
+
+  it('connects complete connectivity to the larger spectral gap', () => {
+    const insight = buildTopologyComparisonInsight({
+      topology: 'complete',
+      spectrum: {
+        ...ANALYSIS_FIXTURE.spectrum,
+        algebraicConnectivity: 6,
+      },
+      diagnostics: ANALYSIS_FIXTURE.diagnostics,
+    })
+
+    expect(insight.headline).toBe('Every node talks to every other.')
+    expect(insight.observation).toMatch(/λ₂ = 6.000/i)
+    expect(insight.interpretation).toMatch(/rapid global mixing/i)
   })
 })
