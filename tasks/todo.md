@@ -587,15 +587,15 @@ tag the recruiter-ready release.
 
 **Acceptance criteria:**
 
-- [ ] Hosted app uses the same production build verified in CI.
-- [ ] Public repository contains no secrets or generated clutter.
-- [ ] Live app, repository, README, and portfolio link agree on naming.
+- [x] Hosted app uses the same production build verified in CI.
+- [x] Public repository contains no secrets or generated clutter.
+- [x] Live app, repository, README, and portfolio link agree on naming.
 
 **Verification:**
 
-- [ ] Live desktop and mobile smoke tests pass.
-- [ ] Clean clone passes documented commands and CI.
-- [ ] Final review has no unresolved high-priority findings.
+- [x] Live desktop and mobile smoke tests pass.
+- [x] Clean clone passes documented commands and CI.
+- [x] Final review has no unresolved high-priority findings.
 
 **Dependencies:** Task 6.4
 
@@ -605,8 +605,8 @@ tag the recruiter-ready release.
 
 ### Checkpoint E: Recruiter-ready release
 
-- [ ] All automated and manual quality gates pass.
-- [ ] One-command Docker workflow succeeds from a clean clone.
-- [ ] Live demo communicates the central insight within 30 seconds.
-- [ ] Repository demonstrates mathematical, visualization, and engineering depth
+- [x] All automated and manual quality gates pass.
+- [x] One-command Docker workflow succeeds from a clean clone.
+- [x] Live demo communicates the central insight within 30 seconds.
+- [x] Repository demonstrates mathematical, visualization, and engineering depth
       without presenting out-of-scope unfinished features.

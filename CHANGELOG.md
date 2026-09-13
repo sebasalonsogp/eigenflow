@@ -13,6 +13,8 @@ Notable user-facing changes to Eigenflow are recorded here.
 - Accessible desktop and mobile interaction with reduced-motion support.
 - A same-origin FastAPI and React production image, CI quality gates, and a
   reproducible Render deployment definition.
+- A public portfolio deployment at
+  [eigenflow-8tdq.onrender.com](https://eigenflow-8tdq.onrender.com).
 
 ### Security
 
