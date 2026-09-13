@@ -112,7 +112,7 @@ For local development, run the API and frontend in separate terminals:
 ```powershell
 cd backend
 uv sync --dev
-uv run fastapi dev src/eigenflow_api/main.py
+uv run uvicorn eigenflow_api.main:app --reload
 ```
 
 ```powershell
