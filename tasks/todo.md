@@ -418,14 +418,14 @@ finished bottleneck experience.
 
 **Acceptance criteria:**
 
-- [ ] Registry defines IDs, display copy, graph factory, control, and default source.
-- [ ] Bottleneck behavior remains unchanged after extraction.
-- [ ] No plugin system or generic schema is introduced.
+- [x] Registry defines IDs, display copy, graph factory, control, and default source.
+- [x] Bottleneck behavior remains unchanged after extraction.
+- [x] No plugin system or generic schema is introduced.
 
 **Verification:**
 
-- [ ] Existing frontend and backend suites pass.
-- [ ] Experiment registry unit tests pass.
+- [x] Existing frontend and backend suites pass.
+- [x] Experiment registry unit tests pass.
 
 **Dependencies:** Checkpoint C2
 

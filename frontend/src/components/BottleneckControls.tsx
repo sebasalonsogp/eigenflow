@@ -1,16 +1,12 @@
-import {
-  BRIDGE_WEIGHT_STEP,
-  DEFAULT_BRIDGE_WEIGHT,
-  DEFAULT_HEAT_SOURCE,
-  MAX_BRIDGE_WEIGHT,
-  MIN_BRIDGE_WEIGHT,
-} from '../experiments/bottleneck'
+import type { BridgeStrengthControl } from '../experiments/types'
 import './BottleneckControls.css'
 
 interface BottleneckControlsProps {
   nodeIds: string[]
   heatSource: string
   bridgeWeight: number
+  defaultHeatSource: string
+  control: BridgeStrengthControl
   onHeatSourceChange: (nodeId: string) => void
   onBridgeWeightChange: (weight: number) => void
   onReset: () => void
@@ -20,12 +16,14 @@ export function BottleneckControls({
   nodeIds,
   heatSource,
   bridgeWeight,
+  defaultHeatSource,
+  control,
   onHeatSourceChange,
   onBridgeWeightChange,
   onReset,
 }: BottleneckControlsProps) {
-  const isAtDefaults = heatSource === DEFAULT_HEAT_SOURCE
-    && bridgeWeight === DEFAULT_BRIDGE_WEIGHT
+  const isAtDefaults = heatSource === defaultHeatSource
+    && bridgeWeight === control.defaultValue
 
   return (
     <section className="bottleneck-controls" aria-label="Experiment controls">
@@ -42,7 +40,7 @@ export function BottleneckControls({
 
       <div className="control-field control-field--bridge">
         <label htmlFor="bridge-strength">
-          Bridge strength
+          {control.label}
           <output htmlFor="bridge-strength" aria-live="polite">
             {bridgeWeight.toFixed(2)}
           </output>
@@ -50,15 +48,15 @@ export function BottleneckControls({
         <input
           id="bridge-strength"
           type="range"
-          min={MIN_BRIDGE_WEIGHT}
-          max={MAX_BRIDGE_WEIGHT}
-          step={BRIDGE_WEIGHT_STEP}
+          min={control.minimum}
+          max={control.maximum}
+          step={control.step}
           value={bridgeWeight}
           onChange={(event) => onBridgeWeightChange(Number(event.target.value))}
         />
         <div className="control-range-labels" aria-hidden="true">
-          <span>Weak</span>
-          <span>Strong</span>
+          <span>{control.minimumLabel}</span>
+          <span>{control.maximumLabel}</span>
         </div>
       </div>
 
