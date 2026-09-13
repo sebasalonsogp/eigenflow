@@ -23,7 +23,7 @@ and both the spectral gap and cross-community mixing increase.
 The main experiment is deliberately simple enough to understand in seconds:
 
 1. Choose where heat enters the graph.
-2. Play or scrub diffusion through time.
+2. Play or scrub diffusion and track the percentage of heat crossing the bridge.
 3. Change the single bridge joining two dense communities.
 4. Reveal the Fiedler partition that separates those communities spectrally.
 
@@ -46,7 +46,7 @@ Two compact comparisons test whether the same model generalizes:
 | Signal | Evidence in the project |
 | --- | --- |
 | Mathematical modeling | Explicit `A`, `D`, and `L = D - A`; symmetric eigendecomposition; spectral heat solution; honest handling of numerical tolerance and degenerate eigenspaces. |
-| Visualization craft | Custom D3 network and spectrum views, synchronized playback and computed prose, perceptually ordered heat color, Fiedler encoding, and responsive interaction. |
+| Visualization craft | Custom D3 network and spectrum views, synchronized playback and computed prose, a live community-balance readout, perceptually expanded low-heat color, Fiedler encoding, and responsive interaction. |
 | Engineering judgment | Typed API boundaries, stale-request cancellation, local frame interpolation, invariant-based tests, measured performance budgets, CI, and one non-root production container. |
 
 The project is intentionally **not** a general graph editor or analytics platform.
@@ -130,7 +130,7 @@ compiled frontend and API from the same origin.
 The current release candidate includes:
 
 - 57 backend tests with 99% line coverage and numerical-invariant checks;
-- 71 frontend tests plus desktop and mobile Chromium coverage of the primary
+- 77 frontend tests plus desktop and mobile Chromium coverage of the primary
   recruiter journey;
 - automated and manual WCAG 2.1 AA, keyboard, reduced-motion, and responsive checks;
 - a 30-node / 435-edge / 240-sample boundary benchmark with 10.08–12.46 ms median
