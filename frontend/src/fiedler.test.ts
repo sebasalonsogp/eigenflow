@@ -66,7 +66,28 @@ describe('deriveFiedlerPartition', () => {
       status: 'available',
       entries: [
         { nodeId: 'a', group: 'boundary' },
-        { nodeId: 'b', group: 'negative' },
+        { nodeId: 'b', group: 'positive' },
+      ],
+    })
+  })
+
+  it('anchors the arbitrary sign to keep the first non-boundary node positive', () => {
+    const partition = deriveFiedlerPartition({
+      ...ANALYSIS_FIXTURE,
+      spectrum: {
+        ...ANALYSIS_FIXTURE.spectrum,
+        eigenvectors: [
+          [Math.SQRT1_2, -Math.SQRT1_2],
+          [Math.SQRT1_2, Math.SQRT1_2],
+        ],
+      },
+    })
+
+    expect(partition).toEqual({
+      status: 'available',
+      entries: [
+        { nodeId: 'a', value: Math.SQRT1_2, group: 'positive' },
+        { nodeId: 'b', value: -Math.SQRT1_2, group: 'negative' },
       ],
     })
   })
