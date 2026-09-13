@@ -45,6 +45,24 @@
   stroke-width: 2;
 }
 
+.network-view--partition .network-node {
+  stroke-width: 4;
+}
+
+[data-partition='negative'] .network-node {
+  stroke: var(--partition-negative);
+  stroke-dasharray: 3 2;
+}
+
+[data-partition='positive'] .network-node {
+  stroke: var(--partition-positive);
+}
+
+[data-partition='boundary'] .network-node {
+  stroke: var(--text-strong);
+  stroke-dasharray: 1 2;
+}
+
 .network-nodes text {
   fill: var(--text-faint);
   font-family: var(--font-mono);

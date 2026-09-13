@@ -1,0 +1,107 @@
+.mode-toggle {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  padding: 10px 16px;
+  background: var(--surface-raised);
+}
+
+.mode-toggle-buttons {
+  display: inline-flex;
+}
+
+.mode-toggle button {
+  min-height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  padding: 0 11px;
+  color: var(--text-faint);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.mode-toggle button + button {
+  border-left: 0;
+}
+
+.mode-toggle button[aria-pressed='true'] {
+  color: var(--background);
+  background: var(--signal);
+}
+
+.mode-toggle button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.mode-toggle button:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+.mode-limitation {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.partition-membership {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin: 0;
+  overflow: hidden;
+}
+
+.partition-membership div {
+  min-width: 0;
+}
+
+.partition-membership dt {
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.partition-membership dd {
+  margin: 2px 0 0;
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partition-membership [data-partition-group='negative'] dt {
+  color: var(--partition-negative);
+}
+
+.partition-membership [data-partition-group='positive'] dt {
+  color: var(--partition-positive);
+}
+
+@media (max-width: 560px) {
+  .mode-toggle {
+    grid-template-columns: 1fr;
+    margin-inline: -12px;
+  }
+
+  .mode-toggle-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .partition-membership {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: start;
+  }
+}

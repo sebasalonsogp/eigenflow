@@ -348,13 +348,13 @@ partition while preserving the heat view as the default.
 
 **Acceptance criteria:**
 
-- [ ] Toggling the overlay never changes the underlying experiment.
-- [ ] Partition membership remains available without relying on color alone.
-- [ ] Disconnected or degenerate cases show a truthful limitation message.
+- [x] Toggling the overlay never changes the underlying experiment.
+- [x] Partition membership remains available without relying on color alone.
+- [x] Disconnected or degenerate cases show a truthful limitation message.
 
 **Verification:**
 
-- [ ] Component tests cover connected, disconnected, and degenerate responses.
+- [x] Component tests cover connected, disconnected, and degenerate responses.
 - [ ] Manual comparison against the bottleneck fixture.
 
 **Dependencies:** Task 4.1
