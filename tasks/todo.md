@@ -442,14 +442,14 @@ contrasts slow path mixing with rapid complete-graph mixing.
 
 **Acceptance criteria:**
 
-- [ ] One switch changes topology while preserving comparable initial conditions.
-- [ ] Prompt and takeaway explain the observed spectral difference.
-- [ ] Reset and experiment switching clear obsolete playback state.
+- [x] One switch changes topology while preserving comparable initial conditions.
+- [x] Prompt and takeaway explain the observed spectral difference.
+- [x] Reset and experiment switching clear obsolete playback state.
 
 **Verification:**
 
-- [ ] Numerical fixture and frontend interaction tests pass.
-- [ ] Manual A/B comparison check.
+- [x] Numerical fixture and frontend interaction tests pass.
+- [x] Manual A/B comparison check.
 
 **Dependencies:** Task 5.1
 
