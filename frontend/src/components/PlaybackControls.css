@@ -1,0 +1,91 @@
+.playback-controls {
+  display: grid;
+  grid-template-columns: auto minmax(160px, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-top: 0;
+  padding: 13px 16px;
+  background: var(--surface-raised);
+}
+
+.playback-controls button {
+  min-height: 36px;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  padding: 0 12px;
+  color: var(--text-muted);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.playback-controls button:disabled {
+  color: var(--text-faint);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.playback-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 84px;
+}
+
+.playback-primary span {
+  color: var(--signal);
+  font-size: 0.7rem;
+}
+
+.playback-timeline {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.playback-timeline label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.playback-timeline output {
+  color: var(--signal);
+}
+
+.playback-timeline input {
+  width: 100%;
+  accent-color: var(--signal);
+}
+
+.playback-controls button:focus-visible,
+.playback-timeline input:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+.playback-motion-note {
+  grid-column: 1 / -1;
+  margin: -3px 0 0;
+  color: var(--text-faint);
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 560px) {
+  .playback-controls {
+    grid-template-columns: 1fr auto;
+    margin-inline: -12px;
+  }
+
+  .playback-timeline {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+}

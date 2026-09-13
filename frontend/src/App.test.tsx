@@ -85,3 +85,30 @@ test('submits changed bottleneck parameters and resets the controls', async () =
   expect(screen.getByRole('slider', { name: /bridge strength/i })).toHaveValue('0.1')
   expect(screen.getByRole('combobox', { name: /heat source/i })).toHaveValue('left-0')
 })
+
+test('plays and scrubs returned samples without issuing another analysis request', async () => {
+  const fetchMock = vi.fn().mockImplementation((url: string) => Promise.resolve({
+    ok: true,
+    status: 200,
+    json: async () => url === '/api/health'
+      ? { status: 'ok', service: 'eigenflow-api' }
+      : ANALYSIS_FIXTURE,
+  }))
+  vi.stubGlobal('fetch', fetchMock)
+  vi.stubGlobal('requestAnimationFrame', vi.fn(() => 1))
+  vi.stubGlobal('cancelAnimationFrame', vi.fn())
+  render(<App />)
+  await screen.findByRole('img', { name: /heat diffusion across 2 graph nodes/i })
+  const analysisCallCount = fetchMock.mock.calls
+    .filter(([url]) => url === '/api/analysis').length
+
+  fireEvent.click(screen.getByRole('button', { name: /^play$/i }))
+  fireEvent.change(screen.getByRole('slider', { name: /simulation time/i }), {
+    target: { value: '1' },
+  })
+
+  expect(screen.getAllByText(/t = 1.00/i)).toHaveLength(2)
+  expect(fetchMock.mock.calls.filter(([url]) => url === '/api/analysis')).toHaveLength(
+    analysisCallCount,
+  )
+})

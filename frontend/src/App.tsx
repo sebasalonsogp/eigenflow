@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getHealth, type HealthState } from './api'
 import { BottleneckControls } from './components/BottleneckControls'
-import { NetworkView } from './components/NetworkView'
+import { SimulationView } from './components/SimulationView'
 import {
-  BOTTLENECK_DISPLAY_SAMPLE_INDEX,
   BOTTLENECK_LAYOUT,
   BOTTLENECK_REQUEST,
   createBottleneckRequest,
@@ -86,7 +85,10 @@ function App() {
             }}
             onReset={() => setParameters(DEFAULT_PARAMETERS)}
           />
-          <AnalysisVisual state={analysis} />
+          <AnalysisVisual
+            state={analysis}
+            simulationKey={`${parameters.heatSource}:${parameters.bridgeWeight}`}
+          />
         </div>
       </section>
 
@@ -105,13 +107,19 @@ function App() {
   )
 }
 
-function AnalysisVisual({ state }: { state: AnalysisState }) {
+function AnalysisVisual({
+  state,
+  simulationKey,
+}: {
+  state: AnalysisState
+  simulationKey: string
+}) {
   if (state.status === 'success') {
     return (
-      <NetworkView
+      <SimulationView
+        key={simulationKey}
         analysis={state.data}
         positions={BOTTLENECK_LAYOUT}
-        sampleIndex={BOTTLENECK_DISPLAY_SAMPLE_INDEX}
       />
     )
   }
