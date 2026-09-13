@@ -69,3 +69,4 @@ Open `http://localhost:8000`. The final image uses Node only to build the fronte
 - [Product specification](docs/specification.md)
 - [Architecture](docs/architecture.md)
 - [Mathematical model](docs/math-model.md)
+- [Supported-boundary performance](docs/performance.md)
