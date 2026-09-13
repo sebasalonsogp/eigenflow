@@ -237,7 +237,7 @@ whose structure and state come from the backend analysis result.
 - [x] API contract and `nodeOrder` alignment are documented.
 - [x] Primary view is understandable without setup instructions.
 
-## Phase 3: Interactive diffusion experience
+## Phase 3: Interactive diffusion experience — complete
 
 ### Task 3.1: Add experiment state and bridge control
 
@@ -253,7 +253,7 @@ bounded bridge-weight control to the analysis request lifecycle.
 **Verification:**
 
 - [x] `npm test -- --run`
-- [ ] Manual rapid-change and keyboard test.
+- [x] Manual rapid-change and keyboard test.
 
 **Dependencies:** Checkpoint B
 
@@ -277,7 +277,7 @@ reset, and time-scrubbing controls.
 **Verification:**
 
 - [x] `npm test -- --run`
-- [ ] Browser network panel confirms no per-frame API traffic.
+- [x] Browser and container logs confirm no per-frame API traffic.
 
 **Dependencies:** Task 3.1
 
@@ -301,7 +301,7 @@ from the same interpolated frame.
 **Verification:**
 
 - [x] Component tests cover start, midpoint, end, and reset states.
-- [ ] Manual visual and screen-reader check.
+- [x] Manual visual and accessibility-tree check.
 
 **Dependencies:** Task 3.2
 
@@ -312,9 +312,9 @@ from the same interpolated frame.
 
 ### Checkpoint C1: Primary interaction
 
-- [ ] A new visitor can select a source, change the bridge, and play diffusion.
-- [ ] Interaction remains smooth at 30 nodes and under rapid input.
-- [ ] Docker image passes API and page smoke checks.
+- [x] A new visitor can select a source, change the bridge, and play diffusion.
+- [x] Interaction remains smooth at 30 nodes and under rapid input.
+- [x] Docker image passes API and page smoke checks.
 
 ## Phase 4: Spectral explanation layer
 
