@@ -15,6 +15,8 @@
   --node-stroke: #dce8e5;
   --node-cool: #2d8c98;
   --node-warm: #c66b4e;
+  --partition-negative: #67c7d4;
+  --partition-positive: #f2b84b;
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 

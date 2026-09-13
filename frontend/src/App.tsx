@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getHealth, type HealthState } from './api'
 import { BottleneckControls } from './components/BottleneckControls'
+import type { NetworkMode } from './components/ModeToggle'
 import { SimulationView } from './components/SimulationView'
 import {
   BOTTLENECK_LAYOUT,
@@ -114,12 +115,16 @@ function AnalysisVisual({
   state: AnalysisState
   simulationKey: string
 }) {
+  const [networkMode, setNetworkMode] = useState<NetworkMode>('heat')
+
   if (state.status === 'success') {
     return (
       <SimulationView
         key={simulationKey}
         analysis={state.data}
         positions={BOTTLENECK_LAYOUT}
+        mode={networkMode}
+        onModeChange={setNetworkMode}
       />
     )
   }

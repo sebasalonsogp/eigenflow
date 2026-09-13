@@ -2,6 +2,7 @@ import { interpolateCividis, scaleLinear, scaleSequential } from 'd3'
 import { useId } from 'react'
 import type { AnalysisResponse } from '../api'
 import type { DiffusionFrame } from '../diffusionFrame'
+import type { FiedlerEntry } from '../fiedler'
 import './NetworkView.css'
 
 export interface NodePosition {
@@ -14,6 +15,7 @@ interface NetworkViewProps {
   positions: Record<string, NodePosition>
   frame: DiffusionFrame
   announceChanges?: boolean
+  partition?: FiedlerEntry[]
 }
 
 const VIEWBOX_WIDTH = 520
@@ -24,6 +26,7 @@ export function NetworkView({
   positions,
   frame,
   announceChanges = true,
+  partition,
 }: NetworkViewProps) {
   const titleId = `${useId().replaceAll(':', '')}-title`
   if (analysis.nodeOrder.length === 0 || frame.state.length === 0) {
@@ -52,10 +55,11 @@ export function NetworkView({
     position: positions[nodeId] ?? circularPosition(index, analysis.nodeOrder.length),
   }))
   const positionById = new Map(positionedNodes.map((node) => [node.id, node.position]))
+  const partitionByNodeId = new Map(partition?.map((entry) => [entry.nodeId, entry.group]))
   const totalHeat = state.reduce((sum, heat) => sum + heat, 0)
 
   return (
-    <figure className="network-view">
+    <figure className={`network-view${partition ? ' network-view--partition' : ''}`}>
       <svg
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
         role="img"
@@ -65,6 +69,7 @@ export function NetworkView({
         <desc id={descriptionId}>
           {analysis.graph.edges.length} weighted edges connect the graph. The heat source is
           {' '}{sourceId}; at time {time.toFixed(2)}, {hottestId} is hottest.
+          {partition && ' The Fiedler partition overlay is active.'}
         </desc>
         <g className="network-edges" aria-hidden="true">
           {analysis.graph.edges.map((edge) => {
@@ -89,6 +94,7 @@ export function NetworkView({
             <g
               key={node.id}
               data-node-id={node.id}
+              data-partition={partitionByNodeId.get(node.id)}
               transform={`translate(${node.position.x} ${node.position.y})`}
             >
               {node.id === sourceId && <circle className="network-node-source" r="17" />}

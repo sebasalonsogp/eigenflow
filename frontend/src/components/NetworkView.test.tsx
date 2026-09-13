@@ -95,3 +95,30 @@ test('silences live summary announcements during automatic playback', () => {
     'off',
   )
 })
+
+test('applies an explicit Fiedler membership overlay in node order', () => {
+  const { container } = render(
+    <NetworkView
+      analysis={ANALYSIS_FIXTURE}
+      positions={{
+        a: { x: 100, y: 90 },
+        b: { x: 300, y: 90 },
+      }}
+      frame={{ time: 0.5, state: [0.75, 0.25] }}
+      partition={[
+        { nodeId: 'a', value: Math.SQRT1_2, group: 'positive' },
+        { nodeId: 'b', value: -Math.SQRT1_2, group: 'negative' },
+      ]}
+    />,
+  )
+
+  expect(container.querySelector('[data-node-id="a"]')).toHaveAttribute(
+    'data-partition',
+    'positive',
+  )
+  expect(container.querySelector('[data-node-id="b"]')).toHaveAttribute(
+    'data-partition',
+    'negative',
+  )
+  expect(screen.getByRole('img', { name: /fiedler partition overlay is active/i })).toBeVisible()
+})

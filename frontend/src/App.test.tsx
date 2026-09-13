@@ -120,3 +120,32 @@ test('plays and scrubs returned samples without issuing another analysis request
     analysisCallCount,
   )
 })
+
+test('toggles the Fiedler overlay without changing the experiment request', async () => {
+  const fetchMock = vi.fn().mockImplementation((url: string) => Promise.resolve({
+    ok: true,
+    status: 200,
+    json: async () => url === '/api/health'
+      ? { status: 'ok', service: 'eigenflow-api' }
+      : ANALYSIS_FIXTURE,
+  }))
+  vi.stubGlobal('fetch', fetchMock)
+  const { container } = render(<App />)
+  await screen.findByRole('img', { name: /heat diffusion across 2 graph nodes/i })
+  const analysisCallCount = fetchMock.mock.calls
+    .filter(([url]) => url === '/api/analysis').length
+
+  fireEvent.click(screen.getByRole('button', { name: /fiedler partition/i }))
+
+  expect(screen.getByRole('button', { name: /fiedler partition/i })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
+  expect(container.querySelector('[data-node-id="a"]')).toHaveAttribute(
+    'data-partition',
+    'positive',
+  )
+  expect(fetchMock.mock.calls.filter(([url]) => url === '/api/analysis')).toHaveLength(
+    analysisCallCount,
+  )
+})
