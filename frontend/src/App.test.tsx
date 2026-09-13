@@ -145,6 +145,30 @@ test('plays and scrubs returned samples without issuing another analysis request
   )
 })
 
+test('keeps the community transfer readout focused on the bottleneck experiment', async () => {
+  vi.stubGlobal('fetch', vi.fn().mockImplementation((url: string) => Promise.resolve({
+    ok: true,
+    status: 200,
+    json: async () => url === '/api/health'
+      ? { status: 'ok', service: 'eigenflow-api' }
+      : ANALYSIS_FIXTURE,
+  })))
+  render(<App />)
+
+  expect(await screen.findByRole('region', {
+    name: /community heat balance/i,
+  })).toBeVisible()
+  expect(screen.getByText(/track how much heat crosses the single bridge/i)).toBeVisible()
+
+  fireEvent.click(screen.getByRole('button', { name: /02 path vs complete/i }))
+
+  await waitFor(() => {
+    expect(screen.queryByRole('region', {
+      name: /community heat balance/i,
+    })).not.toBeInTheDocument()
+  })
+})
+
 test('toggles the Fiedler overlay without changing the experiment request', async () => {
   const fetchMock = vi.fn().mockImplementation((url: string) => Promise.resolve({
     ok: true,
