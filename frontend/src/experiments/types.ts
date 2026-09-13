@@ -11,8 +11,11 @@ export interface BridgeStrengthControl {
   maximumLabel: string
 }
 
-export interface ChoiceControl<Value extends string> {
-  kind: 'topology'
+export interface ChoiceControl<
+  Value extends string,
+  Kind extends string = 'topology',
+> {
+  kind: Kind
   label: string
   defaultValue: Value
   options: readonly { value: Value; label: string }[]
