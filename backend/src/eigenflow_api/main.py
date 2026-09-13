@@ -1,10 +1,11 @@
 """FastAPI application entry point."""
 
 import os
+from collections.abc import Awaitable, Callable
 from pathlib import Path
 
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -19,6 +20,30 @@ app = FastAPI(
     version="0.1.0",
 )
 app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
+
+SECURITY_HEADERS = {
+    "Content-Security-Policy": (
+        "default-src 'self'; base-uri 'none'; connect-src 'self'; font-src 'self'; "
+        "form-action 'none'; frame-ancestors 'none'; img-src 'self' data:; "
+        "object-src 'none'; script-src 'self'; style-src 'self'"
+    ),
+    "Permissions-Policy": "camera=(), geolocation=(), microphone=()",
+    "Referrer-Policy": "no-referrer",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+}
+
+
+@app.middleware("http")
+async def add_security_headers(
+    request: Request,
+    call_next: Callable[[Request], Awaitable[Response]],
+) -> Response:
+    """Apply one conservative browser policy to API and frontend responses."""
+
+    response = await call_next(request)
+    response.headers.update(SECURITY_HEADERS)
+    return response
 
 
 @app.get("/api/health", response_model=HealthResponse, tags=["operations"])
