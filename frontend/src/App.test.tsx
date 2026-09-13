@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, expect, test, vi } from 'vitest'
 import App from './App'
 import { ANALYSIS_FIXTURE } from './test/analysisFixture'
@@ -53,4 +53,35 @@ test('shows an actionable error without collapsing the visualization', async () 
 
   expect(await screen.findByText(/analysis unavailable/i)).toBeVisible()
   expect(screen.getByText(/start the python api and reload/i)).toBeVisible()
+})
+
+test('submits changed bottleneck parameters and resets the controls', async () => {
+  const fetchMock = vi.fn().mockImplementation((url: string) => Promise.resolve({
+    ok: true,
+    status: 200,
+    json: async () => url === '/api/health'
+      ? { status: 'ok', service: 'eigenflow-api' }
+      : ANALYSIS_FIXTURE,
+  }))
+  vi.stubGlobal('fetch', fetchMock)
+  render(<App />)
+  await screen.findByRole('img', { name: /heat diffusion across 2 graph nodes/i })
+
+  fireEvent.change(screen.getByRole('slider', { name: /bridge strength/i }), {
+    target: { value: '0.8' },
+  })
+  fireEvent.change(screen.getByRole('combobox', { name: /heat source/i }), {
+    target: { value: 'right-2' },
+  })
+
+  await waitFor(() => {
+    const analysisCalls = fetchMock.mock.calls.filter(([url]) => url === '/api/analysis')
+    const latestRequest = JSON.parse(analysisCalls.at(-1)?.[1].body as string)
+    expect(latestRequest.heatSource).toBe('right-2')
+    expect(latestRequest.edges.find((edge: { weight: number }) => edge.weight < 1).weight).toBe(0.8)
+  })
+
+  fireEvent.click(screen.getByRole('button', { name: /reset experiment/i }))
+  expect(screen.getByRole('slider', { name: /bridge strength/i })).toHaveValue('0.1')
+  expect(screen.getByRole('combobox', { name: /heat source/i })).toHaveValue('left-0')
 })

@@ -82,4 +82,27 @@ describe('useAnalysis', () => {
       data: { diagnostics: { maxHeatConservationError: 2e-15 } },
     })
   })
+
+  it('debounces rapid request changes before calling the API', () => {
+    vi.useFakeTimers()
+    const fetchMock = vi.fn().mockImplementation(() => new Promise(() => undefined))
+    vi.stubGlobal('fetch', fetchMock)
+    const { rerender, unmount } = renderHook(
+      ({ request }: { request: AnalysisRequest }) => useAnalysis(request, 120),
+      { initialProps: { request: ANALYSIS_REQUEST } },
+    )
+
+    rerender({ request: { ...ANALYSIS_REQUEST, diffusionCoefficient: 0.5 } })
+    rerender({ request: { ...ANALYSIS_REQUEST, diffusionCoefficient: 0.25 } })
+    act(() => vi.advanceTimersByTime(119))
+    expect(fetchMock).not.toHaveBeenCalled()
+
+    act(() => vi.advanceTimersByTime(1))
+    expect(fetchMock).toHaveBeenCalledOnce()
+    const submitted = JSON.parse(fetchMock.mock.calls[0][1].body as string)
+    expect(submitted.diffusionCoefficient).toBe(0.25)
+
+    unmount()
+    vi.useRealTimers()
+  })
 })

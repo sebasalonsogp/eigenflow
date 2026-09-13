@@ -246,13 +246,13 @@ bounded bridge-weight control to the analysis request lifecycle.
 
 **Acceptance criteria:**
 
-- [ ] Changing bridge strength updates only the intended edge weight.
-- [ ] Rapid changes never display an obsolete response.
-- [ ] Control has a label, current value, keyboard support, and reset behavior.
+- [x] Changing bridge strength updates only the intended edge weight.
+- [x] Rapid changes never display an obsolete response.
+- [x] Control has a label, current value, keyboard support, and reset behavior.
 
 **Verification:**
 
-- [ ] `npm test -- --run`
+- [x] `npm test -- --run`
 - [ ] Manual rapid-change and keyboard test.
 
 **Dependencies:** Checkpoint B

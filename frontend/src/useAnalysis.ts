@@ -19,7 +19,10 @@ interface RequestSnapshot {
 
 const LOADING_STATE: AnalysisState = { status: 'loading' }
 
-export function useAnalysis(request: AnalysisRequest): AnalysisState {
+export function useAnalysis(
+  request: AnalysisRequest,
+  debounceMilliseconds = 0,
+): AnalysisState {
   const [snapshot, setSnapshot] = useState<RequestSnapshot>({
     request,
     state: LOADING_STATE,
@@ -29,35 +32,42 @@ export function useAnalysis(request: AnalysisRequest): AnalysisState {
     const controller = new AbortController()
     let acceptsResult = true
 
-    analyzeGraph(request, controller.signal)
-      .then((data) => {
-        if (acceptsResult) {
-          setSnapshot({ request, state: { status: 'success', data } })
-        }
-      })
-      .catch((error: unknown) => {
-        if (!acceptsResult || isAbortError(error)) return
-        if (error instanceof AnalysisApiError && error.kind === 'validation') {
+    const startRequest = () => {
+      analyzeGraph(request, controller.signal)
+        .then((data) => {
+          if (acceptsResult) {
+            setSnapshot({ request, state: { status: 'success', data } })
+          }
+        })
+        .catch((error: unknown) => {
+          if (!acceptsResult || isAbortError(error)) return
+          if (error instanceof AnalysisApiError && error.kind === 'validation') {
+            setSnapshot({
+              request,
+              state: { status: 'validation-error', message: error.message },
+            })
+            return
+          }
           setSnapshot({
             request,
-            state: { status: 'validation-error', message: error.message },
+            state: {
+              status: 'network-error',
+              message: error instanceof Error ? error.message : 'Could not load graph analysis',
+            },
           })
-          return
-        }
-        setSnapshot({
-          request,
-          state: {
-            status: 'network-error',
-            message: error instanceof Error ? error.message : 'Could not load graph analysis',
-          },
         })
-      })
+    }
+    const timeoutId = debounceMilliseconds > 0
+      ? window.setTimeout(startRequest, debounceMilliseconds)
+      : undefined
+    if (timeoutId === undefined) startRequest()
 
     return () => {
       acceptsResult = false
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId)
       controller.abort()
     }
-  }, [request])
+  }, [debounceMilliseconds, request])
 
   return snapshot.request === request ? snapshot.state : LOADING_STATE
 }
