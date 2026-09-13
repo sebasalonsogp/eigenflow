@@ -50,6 +50,21 @@ async def test_analysis_endpoint_returns_one_aligned_typed_payload() -> None:
 
 
 @pytest.mark.anyio
+async def test_large_analysis_response_uses_gzip_when_client_accepts_it() -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        response = await client.post(
+            "/api/analysis",
+            json=_bottleneck_payload(),
+            headers={"Accept-Encoding": "gzip"},
+        )
+
+    assert response.status_code == 200
+    assert response.headers["content-encoding"] == "gzip"
+    assert "Accept-Encoding" in response.headers["vary"]
+
+
+@pytest.mark.anyio
 async def test_analysis_endpoint_returns_actionable_graph_validation_errors() -> None:
     payload = _bottleneck_payload()
     payload["edges"] = [
