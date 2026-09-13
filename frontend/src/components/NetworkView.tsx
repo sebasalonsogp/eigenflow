@@ -1,6 +1,7 @@
 import { interpolateCividis, scaleLinear, scaleSequential } from 'd3'
 import { useId } from 'react'
 import type { AnalysisResponse } from '../api'
+import type { DiffusionFrame } from '../diffusionFrame'
 import './NetworkView.css'
 
 export interface NodePosition {
@@ -11,15 +12,15 @@ export interface NodePosition {
 interface NetworkViewProps {
   analysis: AnalysisResponse
   positions: Record<string, NodePosition>
-  sampleIndex?: number
+  frame: DiffusionFrame
 }
 
 const VIEWBOX_WIDTH = 520
 const VIEWBOX_HEIGHT = 224
 
-export function NetworkView({ analysis, positions, sampleIndex = 0 }: NetworkViewProps) {
+export function NetworkView({ analysis, positions, frame }: NetworkViewProps) {
   const titleId = `${useId().replaceAll(':', '')}-title`
-  if (analysis.nodeOrder.length === 0 || analysis.diffusion.states.length === 0) {
+  if (analysis.nodeOrder.length === 0 || frame.state.length === 0) {
     return (
       <figure className="network-view network-view--empty" role="status">
         <strong>No graph data to display</strong>
@@ -28,12 +29,7 @@ export function NetworkView({ analysis, positions, sampleIndex = 0 }: NetworkVie
     )
   }
 
-  const boundedSampleIndex = Math.min(
-    Math.max(sampleIndex, 0),
-    analysis.diffusion.states.length - 1,
-  )
-  const state = analysis.diffusion.states[boundedSampleIndex]
-  const time = analysis.diffusion.times[boundedSampleIndex]
+  const { state, time } = frame
   const sourceIndex = indexOfMaximum(analysis.diffusion.initialState)
   const hottestIndex = indexOfMaximum(state)
   const sourceId = analysis.nodeOrder[sourceIndex]

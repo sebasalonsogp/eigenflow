@@ -101,13 +101,21 @@ test('plays and scrubs returned samples without issuing another analysis request
   await screen.findByRole('img', { name: /heat diffusion across 2 graph nodes/i })
   const analysisCallCount = fetchMock.mock.calls
     .filter(([url]) => url === '/api/analysis').length
+  expect(screen.getAllByText(/t = 0.00/i)).toHaveLength(2)
 
   fireEvent.click(screen.getByRole('button', { name: /^play$/i }))
   fireEvent.change(screen.getByRole('slider', { name: /simulation time/i }), {
+    target: { value: '0.5' },
+  })
+  expect(screen.getAllByText(/t = 0.50/i)).toHaveLength(2)
+
+  fireEvent.change(screen.getByRole('slider', { name: /simulation time/i }), {
     target: { value: '1' },
   })
-
   expect(screen.getAllByText(/t = 1.00/i)).toHaveLength(2)
+
+  fireEvent.click(screen.getByRole('button', { name: /reset timeline/i }))
+  expect(screen.getAllByText(/t = 0.00/i)).toHaveLength(2)
   expect(fetchMock.mock.calls.filter(([url]) => url === '/api/analysis')).toHaveLength(
     analysisCallCount,
   )

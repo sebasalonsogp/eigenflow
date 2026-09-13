@@ -1,4 +1,5 @@
 import type { AnalysisResponse } from '../api'
+import { interpolateDiffusionFrame } from '../diffusionFrame'
 import { usePlayback } from '../usePlayback'
 import { NetworkView, type NodePosition } from './NetworkView'
 import { PlaybackControls } from './PlaybackControls'
@@ -10,8 +11,9 @@ interface SimulationViewProps {
 
 export function SimulationView({ analysis, positions }: SimulationViewProps) {
   const playback = usePlayback(analysis.diffusion.times)
-  const sampleIndex = sampleIndexAtTime(
+  const frame = interpolateDiffusionFrame(
     analysis.diffusion.times,
+    analysis.diffusion.states,
     playback.currentTime,
   )
 
@@ -20,7 +22,7 @@ export function SimulationView({ analysis, positions }: SimulationViewProps) {
       <NetworkView
         analysis={analysis}
         positions={positions}
-        sampleIndex={sampleIndex}
+        frame={frame}
       />
       <PlaybackControls
         currentTime={playback.currentTime}
@@ -35,11 +37,4 @@ export function SimulationView({ analysis, positions }: SimulationViewProps) {
       />
     </>
   )
-}
-
-function sampleIndexAtTime(times: number[], currentTime: number): number {
-  const nextSampleIndex = times.findIndex((time) => time > currentTime)
-  return nextSampleIndex < 0
-    ? Math.max(times.length - 1, 0)
-    : Math.max(nextSampleIndex - 1, 0)
 }
