@@ -9,7 +9,7 @@ import {
 
 describe('experiment registry', () => {
   it('registers the finished bottleneck experiment with its portfolio story', () => {
-    expect(Object.keys(EXPERIMENTS)).toEqual(['bottleneck'])
+    expect(Object.keys(EXPERIMENTS)).toEqual(['bottleneck', 'path-complete'])
 
     const experiment = getExperiment(DEFAULT_EXPERIMENT_ID)
     expect(experiment).toMatchObject({
@@ -42,7 +42,7 @@ describe('experiment registry', () => {
   })
 
   it('exposes only registered experiment identifiers', () => {
-    const id: ExperimentId = 'bottleneck'
+    const id: ExperimentId = 'path-complete'
     expect(getExperiment(id).id).toBe(id)
   })
 })
