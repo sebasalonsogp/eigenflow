@@ -6,6 +6,7 @@
 spectral-diffusion study that turns the graph Laplacian into something visible and
 testable: change a bridge, inject heat, and watch the spectrum explain what moves.
 
+[Open the live experiment](https://eigenflow-8tdq.onrender.com) ·
 [Watch the interaction](docs/media/eigenflow-demo.webm) ·
 [Read the mathematics](docs/math-model.md) ·
 [Inspect the architecture](docs/architecture.md)
@@ -128,8 +129,9 @@ compiled frontend and API from the same origin.
 
 The current release candidate includes:
 
-- 55 backend tests with 99% line coverage and numerical-invariant checks;
-- 71 frontend tests plus real Chromium coverage of the primary recruiter journey;
+- 57 backend tests with 99% line coverage and numerical-invariant checks;
+- 71 frontend tests plus desktop and mobile Chromium coverage of the primary
+  recruiter journey;
 - automated and manual WCAG 2.1 AA, keyboard, reduced-motion, and responsive checks;
 - a 30-node / 435-edge / 240-sample boundary benchmark with 10.08–12.46 ms median
   local API latency and approximately 60 FPS playback; and

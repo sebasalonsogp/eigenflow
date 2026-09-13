@@ -5,6 +5,8 @@ Eigenflow deploys as one stateless Render web service. Render builds the root
 health checks to `/api/health`. The `PORT=8000` service setting matches the port
 used by the Docker image and local Compose workflow.
 
+Production: [eigenflow-8tdq.onrender.com](https://eigenflow-8tdq.onrender.com)
+
 The checked-in [`render.yaml`](../render.yaml) is intentionally limited to one
 service. There is no database, persistent disk, cross-origin API, or production
 secret to configure.
@@ -17,14 +19,14 @@ secret to configure.
 3. Run the public HTTP smoke check:
 
    ```powershell
-   $env:EIGENFLOW_BASE_URL = "https://<deployed-host>"
+   $env:EIGENFLOW_BASE_URL = "https://eigenflow-8tdq.onrender.com"
    python scripts/container_smoke.py
    ```
 
 4. Run the primary recruiter journey against both configured Playwright projects:
 
    ```powershell
-   $env:EIGENFLOW_E2E_BASE_URL = "https://<deployed-host>"
+   $env:EIGENFLOW_E2E_BASE_URL = "https://eigenflow-8tdq.onrender.com"
    cd frontend
    npx playwright test e2e/bottleneck.spec.ts
    ```
