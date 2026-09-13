@@ -18,6 +18,7 @@ test('renders the ordered spectrum with a meaningful lambda two emphasis', () =>
     'lambda-2',
   )
   expect(screen.getByText(/algebraic connectivity λ₂ = 2.000/i)).toBeVisible()
+  expect(screen.getByText(/fixed during playback · changes when the graph changes/i)).toBeVisible()
 })
 
 test('describes disconnected zero modes without presenting lambda two as connectivity', () => {

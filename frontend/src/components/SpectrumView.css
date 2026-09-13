@@ -30,6 +30,12 @@
   letter-spacing: -0.02em;
 }
 
+.spectrum-context {
+  margin: 4px 0 0;
+  color: var(--text-faint);
+  font-size: 0.68rem;
+}
+
 .spectrum-status {
   margin: 0;
   color: var(--text-muted);

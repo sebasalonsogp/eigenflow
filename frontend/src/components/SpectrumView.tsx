@@ -32,6 +32,9 @@ export function SpectrumView({ spectrum }: SpectrumViewProps) {
         <div>
           <p className="spectrum-kicker">Why it moves this way</p>
           <h2 id={titleId}>Laplacian spectrum</h2>
+          <p className="spectrum-context">
+            Fixed during playback · changes when the graph changes
+          </p>
         </div>
         <p className="spectrum-status">{spectrumStatus(spectrum)}</p>
       </header>

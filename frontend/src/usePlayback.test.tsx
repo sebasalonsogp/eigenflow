@@ -48,6 +48,24 @@ describe('usePlayback', () => {
     expect(result.current).toMatchObject({ currentTime: 3, isPlaying: false })
   })
 
+  it('gives the default bottleneck transient enough time to be observed', () => {
+    let nextFrame: FrameRequestCallback | undefined
+    vi.stubGlobal('requestAnimationFrame', vi.fn((callback: FrameRequestCallback) => {
+      nextFrame = callback
+      return 1
+    }))
+    vi.stubGlobal('cancelAnimationFrame', vi.fn())
+    const { result } = renderHook(() => usePlayback([0, 24], {
+      reducedMotion: false,
+    }))
+
+    act(() => result.current.play())
+    act(() => nextFrame?.(1000))
+    act(() => nextFrame?.(2000))
+
+    expect(result.current.currentTime).toBeCloseTo(1.5)
+  })
+
   it('blocks automatic playback but keeps manual scrubbing under reduced motion', () => {
     vi.stubGlobal('requestAnimationFrame', vi.fn(() => 1))
     vi.stubGlobal('cancelAnimationFrame', vi.fn())
