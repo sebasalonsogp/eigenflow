@@ -565,14 +565,14 @@ engineering choices; capture final screenshots and a short demo clip.
 
 **Acceptance criteria:**
 
-- [ ] README leads with the weak-bridge result and includes the live demo.
-- [ ] Math, architecture, testing, and Docker choices are concise and accurate.
-- [ ] Media shows interaction and coordinated views rather than only the landing page.
+- [x] README leads with the weak-bridge result and includes the live demo.
+- [x] Math, architecture, testing, and Docker choices are concise and accurate.
+- [x] Media shows interaction and coordinated views rather than only the landing page.
 
 **Verification:**
 
-- [ ] Fresh-clone setup and Docker instructions are followed successfully.
-- [ ] All links, screenshots, and commands are checked.
+- [x] Fresh-clone setup and Docker instructions are followed successfully.
+- [x] All links, screenshots, and commands are checked.
 
 **Dependencies:** Task 6.3
 
