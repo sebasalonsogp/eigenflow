@@ -4,9 +4,12 @@
   gap: 16px;
   align-items: center;
   border: 1px solid var(--line);
-  border-top: 0;
   padding: 13px 16px;
   background: var(--surface-raised);
+}
+
+.playback-controls + .network-view {
+  border-top: 0;
 }
 
 .playback-controls button {

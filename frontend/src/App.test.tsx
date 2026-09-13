@@ -122,7 +122,13 @@ test('plays and scrubs returned samples without issuing another analysis request
   vi.stubGlobal('requestAnimationFrame', vi.fn(() => 1))
   vi.stubGlobal('cancelAnimationFrame', vi.fn())
   render(<App />)
-  await screen.findByRole('img', { name: /heat diffusion across 2 graph nodes/i })
+  const network = await screen.findByRole('img', {
+    name: /heat diffusion across 2 graph nodes/i,
+  })
+  const playback = screen.getByRole('region', { name: /diffusion playback/i })
+  expect(
+    playback.compareDocumentPosition(network) & Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy()
   const analysisCallCount = fetchMock.mock.calls
     .filter(([url]) => url === '/api/analysis').length
   expect(screen.getAllByText(/t = 0.00/i)).toHaveLength(2)

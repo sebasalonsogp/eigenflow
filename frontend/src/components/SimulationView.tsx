@@ -43,6 +43,17 @@ export function SimulationView({
         partition={partition}
         onModeChange={onModeChange}
       />
+      <PlaybackControls
+        currentTime={playback.currentTime}
+        startTime={playback.startTime}
+        endTime={playback.endTime}
+        isPlaying={playback.isPlaying}
+        reducedMotion={playback.reducedMotion}
+        onPlay={playback.play}
+        onPause={playback.pause}
+        onSeek={playback.seek}
+        onReset={playback.reset}
+      />
       <NetworkView
         analysis={analysis}
         positions={positions}
@@ -62,17 +73,6 @@ export function SimulationView({
           announceChanges={!playback.isPlaying}
         />
       )}
-      <PlaybackControls
-        currentTime={playback.currentTime}
-        startTime={playback.startTime}
-        endTime={playback.endTime}
-        isPlaying={playback.isPlaying}
-        reducedMotion={playback.reducedMotion}
-        onPlay={playback.play}
-        onPause={playback.pause}
-        onSeek={playback.seek}
-        onReset={playback.reset}
-      />
       <SpectrumView spectrum={analysis.spectrum} />
     </>
   )
