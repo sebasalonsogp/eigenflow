@@ -4,27 +4,18 @@ import { BottleneckControls } from './components/BottleneckControls'
 import { InsightPanel } from './components/InsightPanel'
 import type { NetworkMode } from './components/ModeToggle'
 import { SimulationView } from './components/SimulationView'
-import {
-  BOTTLENECK_LAYOUT,
-  BOTTLENECK_REQUEST,
-  createBottleneckRequest,
-  DEFAULT_BRIDGE_WEIGHT,
-  DEFAULT_HEAT_SOURCE,
-  type BottleneckParameters,
-} from './experiments/bottleneck'
+import { DEFAULT_EXPERIMENT_ID, getExperiment } from './experiments'
 import { useAnalysis, type AnalysisState } from './useAnalysis'
 import './App.css'
 
-const DEFAULT_PARAMETERS: BottleneckParameters = {
-  bridgeWeight: DEFAULT_BRIDGE_WEIGHT,
-  heatSource: DEFAULT_HEAT_SOURCE,
-}
+const ACTIVE_EXPERIMENT = getExperiment(DEFAULT_EXPERIMENT_ID)
+const DEFAULT_PARAMETERS = ACTIVE_EXPERIMENT.defaultParameters
 
 function App() {
   const [health, setHealth] = useState<HealthState>({ status: 'checking' })
   const [parameters, setParameters] = useState(DEFAULT_PARAMETERS)
   const request = useMemo(
-    () => createBottleneckRequest(parameters),
+    () => ACTIVE_EXPERIMENT.createRequest(parameters),
     [parameters],
   )
   const analysis = useAnalysis(request, 120)
@@ -72,13 +63,17 @@ function App() {
 
         <div className="experiment-panel">
           <div className="experiment-label">
-            <span>Experiment 01 · bottleneck</span>
+            <span>
+              Experiment {ACTIVE_EXPERIMENT.sequence} · {ACTIVE_EXPERIMENT.label}
+            </span>
             <span>Live simulation</span>
           </div>
           <BottleneckControls
-            nodeIds={BOTTLENECK_REQUEST.nodes.map((node) => node.id)}
+            nodeIds={request.nodes.map((node) => node.id)}
             heatSource={parameters.heatSource}
             bridgeWeight={parameters.bridgeWeight}
+            defaultHeatSource={ACTIVE_EXPERIMENT.defaultHeatSource}
+            control={ACTIVE_EXPERIMENT.control}
             onHeatSourceChange={(heatSource) => {
               setParameters((current) => ({ ...current, heatSource }))
             }}
@@ -90,6 +85,7 @@ function App() {
           <AnalysisVisual
             state={analysis}
             simulationKey={`${parameters.heatSource}:${parameters.bridgeWeight}`}
+            positions={ACTIVE_EXPERIMENT.positions}
           />
         </div>
       </section>
@@ -125,9 +121,11 @@ function ProjectIntent() {
 function AnalysisVisual({
   state,
   simulationKey,
+  positions,
 }: {
   state: AnalysisState
   simulationKey: string
+  positions: Record<string, { x: number; y: number }>
 }) {
   const [networkMode, setNetworkMode] = useState<NetworkMode>('heat')
 
@@ -136,7 +134,7 @@ function AnalysisVisual({
       <SimulationView
         key={simulationKey}
         analysis={state.data}
-        positions={BOTTLENECK_LAYOUT}
+        positions={positions}
         mode={networkMode}
         onModeChange={setNetworkMode}
       />
