@@ -5,6 +5,7 @@ from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from eigenflow_api.analysis import AnalysisValidationError, analyze_graph
@@ -17,6 +18,7 @@ app = FastAPI(
     description="Scientific-computing backend for interactive spectral diffusion.",
     version="0.1.0",
 )
+app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
 
 
 @app.get("/api/health", response_model=HealthResponse, tags=["operations"])
