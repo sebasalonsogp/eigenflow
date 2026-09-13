@@ -11,7 +11,14 @@ export interface BridgeStrengthControl {
   maximumLabel: string
 }
 
-export interface ExperimentDefinition<Parameters> {
+export interface ChoiceControl<Value extends string> {
+  kind: 'topology'
+  label: string
+  defaultValue: Value
+  options: readonly { value: Value; label: string }[]
+}
+
+export interface ExperimentDefinition<Parameters, Control = BridgeStrengthControl> {
   id: string
   sequence: string
   label: string
@@ -19,7 +26,7 @@ export interface ExperimentDefinition<Parameters> {
   takeaway: string
   defaultHeatSource: string
   defaultParameters: Parameters
-  control: BridgeStrengthControl
+  control: Control
   createRequest: (parameters: Parameters) => AnalysisRequest
   positions: Record<string, { x: number; y: number }>
 }
