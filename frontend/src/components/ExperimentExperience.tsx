@@ -54,7 +54,11 @@ export function ExperimentExperience() {
           <ExperimentPicker
             experiments={EXPERIMENT_OPTIONS}
             activeId={experimentState.id}
-            onSelect={(id) => setExperimentState(createDefaultExperimentState(id))}
+            onSelect={(id) => {
+              if (id !== experimentState.id) {
+                setExperimentState(createDefaultExperimentState(id))
+              }
+            }}
           />
           <div className="experiment-label">
             <span>
