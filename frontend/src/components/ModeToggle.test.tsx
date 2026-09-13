@@ -36,7 +36,7 @@ test('switches from heat to an available Fiedler overlay', () => {
     'aria-pressed',
     'true',
   )
-  expect(screen.getByRole('group', { name: /fiedler partition membership/i })).toHaveTextContent(
+  expect(screen.getByLabelText(/fiedler partition membership/i)).toHaveTextContent(
     'Negative groupleft-0BoundarybridgePositive groupright-0',
   )
 })

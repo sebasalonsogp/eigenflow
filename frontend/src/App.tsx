@@ -21,6 +21,9 @@ function App() {
 
   return (
     <main className="page-shell">
+      <a className="skip-link" href="#experiment-workspace">
+        Skip to interactive experiment
+      </a>
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Eigenflow home">
           <span className="brand-mark" aria-hidden="true">λ</span>

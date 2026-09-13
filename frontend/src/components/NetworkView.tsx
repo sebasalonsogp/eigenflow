@@ -120,6 +120,24 @@ export function NetworkView({
         <span>Hottest {hottestId}</span>
         <span>Total heat {totalHeat.toFixed(3)}</span>
       </figcaption>
+
+      <table className="visually-hidden">
+        <caption>Node heat values at time {time.toFixed(2)}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Graph node</th>
+            <th scope="col">Current heat</th>
+          </tr>
+        </thead>
+        <tbody>
+          {positionedNodes.map((node) => (
+            <tr key={node.id}>
+              <th scope="row">Node {node.id}</th>
+              <td>{formatHeat(node.heat)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </figure>
   )
 }
@@ -129,6 +147,10 @@ function indexOfMaximum(values: number[]): number {
     (maximumIndex, value, index) => value > values[maximumIndex] ? index : maximumIndex,
     0,
   )
+}
+
+function formatHeat(value: number): string {
+  return Math.abs(value) < 0.0005 ? '0.000' : value.toFixed(3)
 }
 
 function circularPosition(index: number, count: number): NodePosition {

@@ -496,14 +496,14 @@ contrast, reduced motion, desktop, and mobile layouts.
 
 **Acceptance criteria:**
 
-- [ ] Primary flow is keyboard operable with visible focus.
-- [ ] Charts expose equivalent names, values, and state outside color alone.
-- [ ] Supported narrow layouts have no unusable controls or clipped content.
+- [x] Primary flow is keyboard operable with visible focus.
+- [x] Charts expose equivalent names, values, and state outside color alone.
+- [x] Supported narrow layouts have no unusable controls or clipped content.
 
 **Verification:**
 
-- [ ] Automated accessibility checks pass.
-- [ ] Manual keyboard, screen-reader, reduced-motion, and mobile checklist passes.
+- [x] Automated accessibility checks pass.
+- [x] Manual keyboard, screen-reader, reduced-motion, and mobile checklist passes.
 
 **Dependencies:** Checkpoint D
 

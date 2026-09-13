@@ -50,7 +50,12 @@ export function ExperimentExperience() {
           </div>
         </div>
 
-        <div className="experiment-panel">
+        <section
+          className="experiment-panel"
+          id="experiment-workspace"
+          aria-label="Interactive experiment"
+          tabIndex={-1}
+        >
           <ExperimentPicker
             experiments={EXPERIMENT_OPTIONS}
             activeId={experimentState.id}
@@ -77,7 +82,7 @@ export function ExperimentExperience() {
             simulationKey={createSimulationKey(experimentState)}
             positions={activeExperiment.positions}
           />
-        </div>
+        </section>
       </section>
 
       {analysis.status === 'success' ? (
