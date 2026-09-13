@@ -79,6 +79,7 @@ export function ExperimentExperience() {
           <AnalysisVisual
             key={experimentState.id}
             state={analysis}
+            experimentId={experimentState.id}
             simulationKey={createSimulationKey(experimentState)}
             positions={activeExperiment.positions}
           />

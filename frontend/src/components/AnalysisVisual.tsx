@@ -1,16 +1,19 @@
 import { useState } from 'react'
+import type { ExperimentId } from '../experiments'
 import type { AnalysisState } from '../useAnalysis'
 import type { NetworkMode } from './ModeToggle'
 import { SimulationView } from './SimulationView'
 
 interface AnalysisVisualProps {
   state: AnalysisState
+  experimentId: ExperimentId
   simulationKey: string
   positions: Record<string, { x: number; y: number }>
 }
 
 export function AnalysisVisual({
   state,
+  experimentId,
   simulationKey,
   positions,
 }: AnalysisVisualProps) {
@@ -21,6 +24,7 @@ export function AnalysisVisual({
       <SimulationView
         key={simulationKey}
         analysis={state.data}
+        experimentId={experimentId}
         positions={positions}
         mode={networkMode}
         onModeChange={setNetworkMode}
