@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getHealth, type HealthState } from './api'
 import { BottleneckControls } from './components/BottleneckControls'
+import { InsightPanel } from './components/InsightPanel'
 import type { NetworkMode } from './components/ModeToggle'
 import { SimulationView } from './components/SimulationView'
 import {
@@ -93,18 +94,31 @@ function App() {
         </div>
       </section>
 
-      <section className="project-intent" aria-labelledby="intent-title">
-        <p className="section-index">01 / Working model</p>
-        <div>
-          <h2 id="intent-title">Python computes. D3 makes it visible.</h2>
-          <p>
-            The numerical engine validates the graph, constructs its Laplacian,
-            decomposes the spectrum, and solves heat flow. The network above is the
-            first view driven by that single aligned result—not a decorative sketch.
-          </p>
-        </div>
-      </section>
+      {analysis.status === 'success' ? (
+        <InsightPanel
+          analysis={analysis.data}
+          bridgeWeight={parameters.bridgeWeight}
+        />
+      ) : (
+        <ProjectIntent />
+      )}
     </main>
+  )
+}
+
+function ProjectIntent() {
+  return (
+    <section className="project-intent" aria-labelledby="intent-title">
+      <p className="section-index">01 / Working model</p>
+      <div>
+        <h2 id="intent-title">Python computes. D3 makes it visible.</h2>
+        <p>
+          The numerical engine validates the graph, constructs its Laplacian,
+          decomposes the spectrum, and solves heat flow. The network above is the
+          first view driven by that single aligned result—not a decorative sketch.
+        </p>
+      </div>
+    </section>
   )
 }
 

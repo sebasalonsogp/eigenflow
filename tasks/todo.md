@@ -371,14 +371,14 @@ partition while preserving the heat view as the default.
 
 **Acceptance criteria:**
 
-- [ ] Explanation updates consistently with the active analysis result.
-- [ ] Copy distinguishes observation, mathematical interpretation, and limitation.
-- [ ] Strengthening the bridge produces no contradictory qualitative statement.
+- [x] Explanation updates consistently with the active analysis result.
+- [x] Copy distinguishes observation, mathematical interpretation, and limitation.
+- [x] Strengthening the bridge produces no contradictory qualitative statement.
 
 **Verification:**
 
-- [ ] Tests cover weak, medium, and strong bridge fixtures.
-- [ ] Content review against `docs/math-model.md`.
+- [x] Tests cover weak, medium, and strong bridge fixtures.
+- [x] Content review against `docs/math-model.md`.
 
 **Dependencies:** Tasks 4.1 and 4.2
 
