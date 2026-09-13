@@ -519,15 +519,15 @@ the running production image in CI.
 
 **Acceptance criteria:**
 
-- [ ] Browser test covers load, source selection, bridge change, playback, and
+- [x] Browser test covers load, source selection, bridge change, playback, and
       spectrum update.
-- [ ] Container smoke test checks `/api/health`, `/api/analysis`, and `/`.
-- [ ] Failures provide useful logs without adding production observability services.
+- [x] Container smoke test checks `/api/health`, `/api/analysis`, and `/`.
+- [x] Failures provide useful logs without adding production observability services.
 
 **Verification:**
 
-- [ ] Browser suite passes locally and in CI.
-- [ ] CI builds and starts the production image successfully.
+- [x] Browser suite passes locally and in CI.
+- [x] CI builds and starts the production image successfully.
 
 **Dependencies:** Task 6.1
 
