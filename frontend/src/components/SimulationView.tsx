@@ -3,6 +3,7 @@ import { interpolateDiffusionFrame } from '../diffusionFrame'
 import { usePlayback } from '../usePlayback'
 import { NetworkView, type NodePosition } from './NetworkView'
 import { PlaybackControls } from './PlaybackControls'
+import { SpectrumView } from './SpectrumView'
 
 interface SimulationViewProps {
   analysis: AnalysisResponse
@@ -36,6 +37,7 @@ export function SimulationView({ analysis, positions }: SimulationViewProps) {
         onSeek={playback.seek}
         onReset={playback.reset}
       />
+      <SpectrumView spectrum={analysis.spectrum} />
     </>
   )
 }
