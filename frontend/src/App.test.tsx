@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, expect, test, vi } from 'vitest'
 import App from './App'
+import type { AnalysisRequest, AnalysisResponse } from './api'
 import { ANALYSIS_FIXTURE } from './test/analysisFixture'
 
 afterEach(() => {
@@ -191,3 +192,106 @@ test('updates the spectral explanation from the active bridge analysis', async (
   })).toBeVisible()
   expect(screen.getByText(/backend reports λ₂ = 0.600/i)).toBeVisible()
 })
+
+test('compares path and complete topology without carrying obsolete experiment state', async () => {
+  const analysisRequests: AnalysisRequest[] = []
+  vi.stubGlobal('fetch', vi.fn().mockImplementation((url: string, options?: RequestInit) => {
+    if (url === '/api/health') return Promise.resolve({
+      ok: true,
+      status: 200,
+      json: async () => ({ status: 'ok', service: 'eigenflow-api' }),
+    })
+
+    const request = JSON.parse(options?.body as string) as AnalysisRequest
+    analysisRequests.push(request)
+    const isComparison = request.nodes[0]?.id === 'node-0'
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      json: async () => isComparison
+        ? comparisonAnalysis(request)
+        : ANALYSIS_FIXTURE,
+    })
+  }))
+  render(<App />)
+  await screen.findByRole('img', { name: /heat diffusion across 2 graph nodes/i })
+
+  fireEvent.click(screen.getByRole('button', { name: /02 path vs complete/i }))
+
+  expect(await screen.findByRole('heading', {
+    name: /local links make distance matter/i,
+  })).toBeVisible()
+  expect(screen.getByText(/topology—not graph size/i)).toBeVisible()
+  expect(screen.getByRole('button', { name: /^path$/i })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
+  const pathRequest = analysisRequests.at(-1)
+  expect(pathRequest?.nodes).toHaveLength(6)
+  expect(pathRequest?.edges).toHaveLength(5)
+  expect(pathRequest?.heatSource).toBe('node-0')
+
+  fireEvent.change(screen.getByRole('slider', { name: /simulation time/i }), {
+    target: { value: '2' },
+  })
+  expect(screen.getByRole('slider', { name: /simulation time/i })).toHaveValue('2')
+  fireEvent.click(screen.getByRole('button', { name: /^complete$/i }))
+
+  expect(await screen.findByRole('heading', {
+    name: /every node talks to every other/i,
+  })).toBeVisible()
+  const completeRequest = analysisRequests.at(-1)
+  expect(completeRequest?.edges).toHaveLength(15)
+  expect(completeRequest?.nodes).toEqual(pathRequest?.nodes)
+  expect(completeRequest?.heatSource).toBe(pathRequest?.heatSource)
+  expect(completeRequest?.times).toEqual(pathRequest?.times)
+  expect(screen.getByRole('slider', { name: /simulation time/i })).toHaveValue('0')
+
+  fireEvent.click(screen.getByRole('button', { name: /01 bottleneck/i }))
+  fireEvent.click(screen.getByRole('button', { name: /02 path vs complete/i }))
+  expect(await screen.findByRole('button', { name: /^path$/i })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
+})
+
+function comparisonAnalysis(request: AnalysisRequest): AnalysisResponse {
+  const size = request.nodes.length
+  const isComplete = request.edges.length === 15
+  const initialState = request.nodes.map((_, index) => index === 0 ? 1 : 0)
+  const identity = request.nodes.map((_, row) => (
+    request.nodes.map((__, column) => row === column ? 1 : 0)
+  ))
+  const zeroMatrix = request.nodes.map(() => request.nodes.map(() => 0))
+
+  return {
+    nodeOrder: request.nodes.map((node) => node.id),
+    graph: { nodes: request.nodes, edges: request.edges },
+    matrices: {
+      adjacency: zeroMatrix,
+      degree: zeroMatrix,
+      laplacian: zeroMatrix,
+    },
+    spectrum: {
+      eigenvalues: isComplete ? [0, 6, 6, 6, 6, 6] : [0, 0.268, 1, 2, 3, 4],
+      eigenvectors: identity,
+      residualNorms: Array.from({ length: size }, () => 0),
+      zeroEigenvalueMultiplicity: 1,
+      algebraicConnectivity: isComplete ? 6 : 0.268,
+      degenerateEigenspaces: isComplete
+        ? [{ eigenvalue: 6, indices: [1, 2, 3, 4, 5], multiplicity: 5 }]
+        : [],
+      tolerance: 1e-10,
+    },
+    diffusion: {
+      times: request.times,
+      states: request.times.map(() => initialState),
+      initialState,
+      diffusionCoefficient: request.diffusionCoefficient,
+    },
+    diagnostics: {
+      maxEigenpairResidual: 0,
+      maxHeatConservationError: 0,
+    },
+  }
+}
