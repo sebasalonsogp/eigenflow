@@ -149,3 +149,45 @@ test('toggles the Fiedler overlay without changing the experiment request', asyn
     analysisCallCount,
   )
 })
+
+test('updates the spectral explanation from the active bridge analysis', async () => {
+  const fetchMock = vi.fn().mockImplementation((url: string, options?: RequestInit) => {
+    if (url === '/api/health') return Promise.resolve({
+      ok: true,
+      status: 200,
+      json: async () => ({ status: 'ok', service: 'eigenflow-api' }),
+    })
+
+    const request = JSON.parse(options?.body as string)
+    const bridgeWeight = request.edges.find(
+      (edge: { source: string; target: string }) =>
+        edge.source === 'left-3' && edge.target === 'right-0',
+    ).weight
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        ...ANALYSIS_FIXTURE,
+        spectrum: {
+          ...ANALYSIS_FIXTURE.spectrum,
+          eigenvalues: [0, bridgeWeight === 1.5 ? 0.6 : 0.05],
+          algebraicConnectivity: bridgeWeight === 1.5 ? 0.6 : 0.05,
+        },
+      }),
+    })
+  })
+  vi.stubGlobal('fetch', fetchMock)
+  render(<App />)
+
+  expect(await screen.findByRole('heading', { name: /one weak edge sets the pace/i })).toBeVisible()
+  expect(screen.getByText(/backend reports λ₂ = 0.050/i)).toBeVisible()
+
+  fireEvent.change(screen.getByRole('slider', { name: /bridge strength/i }), {
+    target: { value: '1.5' },
+  })
+
+  expect(await screen.findByRole('heading', {
+    name: /bridge is no longer the weakest edge/i,
+  })).toBeVisible()
+  expect(screen.getByText(/backend reports λ₂ = 0.600/i)).toBeVisible()
+})
