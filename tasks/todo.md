@@ -294,13 +294,13 @@ from the same interpolated frame.
 
 **Acceptance criteria:**
 
-- [ ] All displayed values correspond to the same playback time.
-- [ ] The palette remains interpretable for common color-vision deficiencies.
-- [ ] Selected source and hottest region remain available as text.
+- [x] All displayed values correspond to the same playback time.
+- [x] The palette remains interpretable for common color-vision deficiencies.
+- [x] Selected source and hottest region remain available as text.
 
 **Verification:**
 
-- [ ] Component tests cover start, midpoint, end, and reset states.
+- [x] Component tests cover start, midpoint, end, and reset states.
 - [ ] Manual visual and screen-reader check.
 
 **Dependencies:** Task 3.2
