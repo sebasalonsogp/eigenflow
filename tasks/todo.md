@@ -332,7 +332,7 @@ clear emphasis on the zero modes and `lambda_2`.
 **Verification:**
 
 - [x] `npm test -- --run`
-- [ ] Manual keyboard and narrow-layout check.
+- [x] Manual keyboard and narrow-layout check.
 
 **Dependencies:** Task 3.3
 
@@ -355,7 +355,7 @@ partition while preserving the heat view as the default.
 **Verification:**
 
 - [x] Component tests cover connected, disconnected, and degenerate responses.
-- [ ] Manual comparison against the bottleneck fixture.
+- [x] Manual comparison against the bottleneck fixture.
 
 **Dependencies:** Task 4.1
 
@@ -412,8 +412,8 @@ feature if Checkpoint C2 shows it distracts from the primary story.
 
 ### Checkpoint C2: Complete portfolio story
 
-- [ ] Network, playback, spectrum, and explanation stay synchronized.
-- [ ] A reviewer can explain the bridge/`lambda_2`/mixing relationship after use.
+- [x] Network, playback, spectrum, and explanation stay synchronized.
+- [x] A reviewer can explain the bridge/`lambda_2`/mixing relationship after use.
 - [ ] Matrix inspector is retained only if it strengthens that understanding.
 
 ## Phase 5: Curated comparison experiments
