@@ -325,13 +325,13 @@ clear emphasis on the zero modes and `lambda_2`.
 
 **Acceptance criteria:**
 
-- [ ] Spectrum updates from the current analysis response.
-- [ ] `lambda_2` is highlighted only when its interpretation is valid.
-- [ ] Values are available through labels or a compact accessible table.
+- [x] Spectrum updates from the current analysis response.
+- [x] `lambda_2` is highlighted only when its interpretation is valid.
+- [x] Values are available through labels or a compact accessible table.
 
 **Verification:**
 
-- [ ] `npm test -- --run`
+- [x] `npm test -- --run`
 - [ ] Manual keyboard and narrow-layout check.
 
 **Dependencies:** Task 3.3
