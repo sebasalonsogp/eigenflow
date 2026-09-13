@@ -1,0 +1,96 @@
+.path-complete-controls {
+  display: grid;
+  grid-template-columns: minmax(112px, 0.7fr) minmax(210px, 1.3fr) auto;
+  gap: 20px;
+  align-items: end;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  padding: 14px 16px;
+  background: var(--surface-raised);
+}
+
+.fixed-source,
+.topology-control {
+  margin: 0;
+}
+
+.fixed-source {
+  display: grid;
+  gap: 8px;
+}
+
+.fixed-source span,
+.topology-control > span {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.fixed-source strong {
+  min-height: 36px;
+  border: 1px solid var(--line-strong);
+  padding: 8px 10px;
+  color: var(--signal);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.topology-control {
+  display: grid;
+  gap: 7px;
+}
+
+.topology-control > div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.topology-control button,
+.path-complete-reset {
+  min-height: 36px;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  padding: 0 12px;
+  color: var(--text-muted);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.topology-control button + button {
+  border-left: 0;
+}
+
+.topology-control button[aria-pressed='true'] {
+  color: var(--background);
+  background: var(--signal);
+}
+
+.path-complete-reset:disabled {
+  color: var(--text-faint);
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.topology-control button:focus-visible,
+.path-complete-reset:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .path-complete-controls {
+    grid-template-columns: 1fr auto;
+    margin-inline: -12px;
+  }
+
+  .topology-control {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
