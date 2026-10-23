@@ -1,25 +1,22 @@
 .playback-controls {
   display: grid;
-  grid-template-columns: auto minmax(160px, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 16px;
-  align-items: center;
-  border: 1px solid var(--line);
-  padding: 13px 16px;
+  align-items: end;
+  border-bottom: 1px solid var(--line);
+  padding: 12px 16px 14px;
   background: var(--surface-raised);
-}
-
-.playback-controls + .network-view {
-  border-top: 0;
 }
 
 .playback-controls button {
   min-height: var(--control-height);
   border: 1px solid var(--line-strong);
-  border-radius: 0;
-  padding: 0 12px;
+  border-radius: var(--radius);
+  padding: 0 14px;
   color: var(--text-muted);
   background: var(--surface);
   cursor: pointer;
+  transition: background 160ms, transform 160ms;
 }
 
 .playback-controls button:disabled {
@@ -28,18 +25,20 @@
   opacity: 0.55;
 }
 
-.playback-primary {
+.playback-controls .playback-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  min-width: 84px;
+  gap: 8px;
+  min-width: 96px;
+  border-color: transparent;
+  color: var(--background);
+  background: var(--signal);
+  font-weight: 650;
 }
 
-.playback-primary span {
-  color: var(--signal);
-  font-size: 0.7rem;
-}
+.playback-primary:not(:disabled):active { transform: scale(0.97); }
+.playback-primary span { font-size: 0.75rem; }
 
 .playback-timeline {
   display: grid;
@@ -53,17 +52,16 @@
   gap: 12px;
   color: var(--text-faint);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-.playback-timeline output {
-  color: var(--signal);
-}
+.playback-timeline output { color: var(--signal); }
 
 .playback-timeline input {
   width: 100%;
+  margin: 0;
   accent-color: var(--signal);
 }
 
@@ -77,18 +75,10 @@
   grid-column: 1 / -1;
   margin: -3px 0 0;
   color: var(--text-faint);
-  font-size: 0.7rem;
-  line-height: 1.45;
+  font-size: 0.8rem;
 }
 
 @media (max-width: 560px) {
-  .playback-controls {
-    grid-template-columns: 1fr auto;
-    margin-inline: -12px;
-  }
-
-  .playback-timeline {
-    grid-column: 1 / -1;
-    grid-row: 1;
-  }
+  .playback-controls { grid-template-columns: 1fr auto; }
+  .playback-timeline { grid-column: 1 / -1; grid-row: 1; }
 }

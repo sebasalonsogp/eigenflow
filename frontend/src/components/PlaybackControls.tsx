@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react'
 import './PlaybackControls.css'
 
 interface PlaybackControlsProps {
+  chart?: ReactNode
   currentTime: number
   startTime: number
   endTime: number
@@ -13,6 +15,7 @@ interface PlaybackControlsProps {
 }
 
 export function PlaybackControls({
+  chart,
   currentTime,
   startTime,
   endTime,
@@ -42,6 +45,7 @@ export function PlaybackControls({
             t = {currentTime.toFixed(2)}
           </output>
         </label>
+        {chart}
         <input
           id="simulation-time"
           type="range"

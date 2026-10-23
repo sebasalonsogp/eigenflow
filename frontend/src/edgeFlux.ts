@@ -5,6 +5,8 @@ export interface EdgeFlux {
   from: string
   to: string
   magnitude: number
+  // Positive when heat moves from edge.source toward edge.target.
+  signed: number
 }
 
 // Fick's law on a graph: heat moves along an edge at rate w * (x_i - x_j).
@@ -25,6 +27,7 @@ export function computeEdgeFluxes(
       from: flux >= 0 ? edge.source : edge.target,
       to: flux >= 0 ? edge.target : edge.source,
       magnitude: Math.abs(flux),
+      signed: flux,
     }]
   })
 }
@@ -47,4 +50,45 @@ export function maximumEdgeFlux(
     maximum,
     ...computeEdgeFluxes(nodeOrder, edges, state).map((flux) => flux.magnitude),
   ), 0)
+}
+
+export interface TransferSeries {
+  signedFlux: number[]
+  cumulative: number[]
+}
+
+// Heat carried source -> target since t0, per sample. Playback interpolates states
+// linearly, so flux is linear between samples and the trapezoid rule is exact.
+export function buildTransferSeries(
+  nodeOrder: string[],
+  edges: GraphEdge[],
+  times: number[],
+  states: number[][],
+): Map<string, TransferSeries> {
+  const series = new Map<string, TransferSeries>()
+  states.forEach((state, sampleIndex) => {
+    for (const flux of computeEdgeFluxes(nodeOrder, edges, state)) {
+      const entry = series.get(flux.edgeId) ?? { signedFlux: [], cumulative: [] }
+      const previousFlux = entry.signedFlux.at(-1) ?? flux.signed
+      const interval = sampleIndex === 0 ? 0 : times[sampleIndex] - times[sampleIndex - 1]
+      entry.cumulative.push((entry.cumulative.at(-1) ?? 0)
+        + interval * (previousFlux + flux.signed) / 2)
+      entry.signedFlux.push(flux.signed)
+      series.set(flux.edgeId, entry)
+    }
+  })
+  return series
+}
+
+export function transferAtTime(
+  series: TransferSeries,
+  times: number[],
+  time: number,
+  currentSignedFlux: number,
+): number {
+  const upperIndex = times.findIndex((sampleTime) => sampleTime > time)
+  const lowerIndex = upperIndex === -1 ? times.length - 1 : Math.max(upperIndex - 1, 0)
+  const elapsed = Math.max(time - (times[lowerIndex] ?? 0), 0)
+  return (series.cumulative[lowerIndex] ?? 0)
+    + elapsed * ((series.signedFlux[lowerIndex] ?? 0) + currentSignedFlux) / 2
 }

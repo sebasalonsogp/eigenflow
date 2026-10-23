@@ -1,7 +1,7 @@
 .spectrum-view {
   border: 1px solid var(--line);
-  border-top: 0;
-  padding: 20px;
+  border-radius: var(--radius);
+  padding: 18px 20px;
   background: var(--surface-raised);
 }
 
@@ -17,7 +17,7 @@
   margin-bottom: 5px;
   color: var(--signal);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   font-weight: 650;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -33,14 +33,14 @@
 .spectrum-context {
   margin: 4px 0 0;
   color: var(--text-faint);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
 }
 
 .spectrum-status {
   margin: 0;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   text-align: right;
   white-space: nowrap;
 }
@@ -48,7 +48,7 @@
 .spectrum-chart {
   display: block;
   width: 100%;
-  max-height: 180px;
+  max-height: 230px;
   border-block: 1px solid var(--line);
 }
 
@@ -93,6 +93,16 @@
   stroke-width: 2;
 }
 
+.spectrum-mode line,
+.spectrum-mode circle {
+  transition: transform 480ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: dot-rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+.spectrum-mode line { animation-name: stem-rise; }
+@keyframes stem-rise { from { transform: scaleY(0); } }
+@keyframes dot-rise { from { transform: translateY(0); } }
+
 .spectrum-mode[data-emphasis='zero-mode'] circle {
   fill: var(--positive);
 }
@@ -129,12 +139,12 @@
   padding-left: 8px;
   color: var(--text-faint);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.7rem;
 }
 
 .spectrum-values strong {
   color: var(--text-muted);
-  font-size: 0.67rem;
+  font-size: 0.78rem;
   font-weight: 500;
 }
 
@@ -145,10 +155,7 @@
 }
 
 @media (max-width: 560px) {
-  .spectrum-view {
-    margin-inline: -12px;
-    padding-inline: 16px;
-  }
+  .spectrum-view { padding-inline: 14px; }
 
   .spectrum-header {
     display: grid;

@@ -12,6 +12,7 @@ interface SpectrumViewProps {
 
 const VIEWBOX_WIDTH = 520
 const BASELINE_Y = 100
+const STEM_TOP_Y = 18
 const WEIGHT_BASELINE_Y = 170
 const WEIGHT_BAR_HEIGHT = 34
 
@@ -33,7 +34,7 @@ export function SpectrumView({ spectrum, initialState, state }: SpectrumViewProp
     .range([32, VIEWBOX_WIDTH - 32])
   const yPosition = scaleLinear()
     .domain([0, maximumEigenvalue])
-    .range([BASELINE_Y, 18])
+    .range([BASELINE_Y, STEM_TOP_Y])
   const hasMeaningfulLambdaTwo = spectrum.eigenvalues.length > 1
     && spectrum.zeroEigenvalueMultiplicity === 1
     && spectrum.algebraicConnectivity !== null
@@ -115,15 +116,32 @@ export function SpectrumView({ spectrum, initialState, state }: SpectrumViewProp
                 const emphasis = modeEmphasis(index)
                 const x = xPosition(index)
                 const y = yPosition(eigenvalue)
+                // Transforms (not geometry attributes) let stems glide when λ changes.
+                const motion = { animationDelay: `${index * 35}ms` }
                 return (
                   <g
-                    key={`${index}-${eigenvalue}`}
+                    key={index}
                     className="spectrum-mode"
                     data-spectrum-index={index}
                     data-emphasis={emphasis}
                   >
-                    <line x1={x} x2={x} y1={BASELINE_Y} y2={y} />
-                    <circle cx={x} cy={y} r={emphasis ? 5 : 4} />
+                    <line
+                      x1={x}
+                      x2={x}
+                      y1={BASELINE_Y}
+                      y2={STEM_TOP_Y}
+                      style={{
+                        ...motion,
+                        transform: `scaleY(${(BASELINE_Y - y) / (BASELINE_Y - STEM_TOP_Y)})`,
+                        transformOrigin: `${x}px ${BASELINE_Y}px`,
+                      }}
+                    />
+                    <circle
+                      cx={x}
+                      cy={BASELINE_Y}
+                      r={emphasis ? 5 : 4}
+                      style={{ ...motion, transform: `translateY(${y - BASELINE_Y}px)` }}
+                    />
                     <text x={x} y="119">λ{index + 1}</text>
                   </g>
                 )

@@ -1,42 +1,40 @@
 .experiment-picker {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 10px;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px 20px;
   align-items: center;
   margin-bottom: 14px;
-  border-block: 1px solid var(--line);
-  padding: 12px 0;
 }
 
 .experiment-picker-tabs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, auto);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 3px;
+  background: var(--surface);
 }
 
 .experiment-picker button {
   min-height: var(--control-height);
   border: 0;
-  border-left: 1px solid var(--line-strong);
-  padding: 0 12px;
+  border-radius: 4px;
+  padding: 0 16px;
   color: var(--text-faint);
   background: transparent;
   cursor: pointer;
 }
 
-.experiment-picker button:last-child {
-  border-right: 1px solid var(--line-strong);
-}
-
 .experiment-picker button[aria-pressed='true'] {
   color: var(--text-strong);
-  background: var(--surface-raised);
+  background: var(--line);
 }
 
 .experiment-picker button span {
   margin-right: 7px;
   color: var(--signal);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.7rem;
 }
 
 .experiment-picker button:focus-visible {
@@ -48,10 +46,9 @@
 
 .experiment-question {
   justify-self: start;
-  max-width: 510px;
   margin: 0;
   color: var(--text-muted);
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   line-height: 1.5;
   text-align: left;
 }
@@ -60,13 +57,14 @@
   margin-right: 8px;
   color: var(--signal);
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
 @media (max-width: 760px) {
-  .experiment-picker-tabs { grid-template-columns: 1fr; }
+  .experiment-picker { grid-template-columns: minmax(0, 1fr); }
+  .experiment-picker-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 420px) {

@@ -7,7 +7,8 @@ import {
 } from './api'
 
 export type AnalysisState =
-  | { status: 'loading' }
+  // previous keeps the last successful result drawable while a new request runs.
+  | { status: 'loading'; previous?: AnalysisResponse }
   | { status: 'success'; data: AnalysisResponse }
   | { status: 'validation-error'; message: string }
   | { status: 'network-error'; message: string }
@@ -15,6 +16,7 @@ export type AnalysisState =
 interface RequestSnapshot {
   request: AnalysisRequest
   state: AnalysisState
+  lastSuccess?: AnalysisResponse
 }
 
 const LOADING_STATE: AnalysisState = { status: 'loading' }
@@ -36,25 +38,27 @@ export function useAnalysis(
       analyzeGraph(request, controller.signal)
         .then((data) => {
           if (acceptsResult) {
-            setSnapshot({ request, state: { status: 'success', data } })
+            setSnapshot({ request, state: { status: 'success', data }, lastSuccess: data })
           }
         })
         .catch((error: unknown) => {
           if (!acceptsResult || isAbortError(error)) return
           if (error instanceof AnalysisApiError && error.kind === 'validation') {
-            setSnapshot({
+            setSnapshot((previous) => ({
               request,
               state: { status: 'validation-error', message: error.message },
-            })
+              lastSuccess: previous.lastSuccess,
+            }))
             return
           }
-          setSnapshot({
+          setSnapshot((previous) => ({
             request,
             state: {
               status: 'network-error',
               message: error instanceof Error ? error.message : 'Could not load graph analysis',
             },
-          })
+            lastSuccess: previous.lastSuccess,
+          }))
         })
     }
     const timeoutId = debounceMilliseconds > 0
@@ -69,7 +73,10 @@ export function useAnalysis(
     }
   }, [debounceMilliseconds, request])
 
-  return snapshot.request === request ? snapshot.state : LOADING_STATE
+  if (snapshot.request === request) return snapshot.state
+  return snapshot.lastSuccess
+    ? { status: 'loading', previous: snapshot.lastSuccess }
+    : LOADING_STATE
 }
 
 function isAbortError(error: unknown): boolean {
