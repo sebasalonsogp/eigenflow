@@ -40,7 +40,9 @@ export function ExperimentExperience() {
       <section className="hero" id="top" aria-labelledby="hero-title">
         <div className="hero-copy">
           <p className="eyebrow">Spectral graph diffusion</p>
-          <h1 id="hero-title">Structure shapes how signals move.</h1>
+          <h1 id="hero-title">
+            Structure shapes how <span className="hero-accent">signals move.</span>
+          </h1>
           <p className="hero-summary">
             An interactive study of heat flow, bottlenecks, and the Laplacian
             eigenmodes that make a network’s hidden geometry visible.
@@ -48,6 +50,12 @@ export function ExperimentExperience() {
           <div className="formula" aria-label="x of t equals e to the negative L t times x of zero">
             x(t) = e<sup>−Lt</sup>x(0)
           </div>
+          <ol className="hero-steps" aria-label="How to explore">
+            <li><span aria-hidden="true">01</span>Choose where heat enters the graph.</li>
+            <li><span aria-hidden="true">02</span>Play or scrub the diffusion and follow the flux.</li>
+            <li><span aria-hidden="true">03</span>Change the structure and watch λ₂ respond.</li>
+            <li><span aria-hidden="true">04</span>Reveal the Fiedler partition it implies.</li>
+          </ol>
         </div>
 
         <section

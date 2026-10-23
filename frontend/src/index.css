@@ -17,6 +17,8 @@
   --node-warm: #c66b4e;
   --partition-negative: #67c7d4;
   --partition-positive: #f2b84b;
+  --flux: #ffd48a;
+  --heat-accent: linear-gradient(100deg, #f5f992 0%, #f98e09 45%, #e0535a 100%);
   --control-height: 36px;
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
@@ -31,7 +33,15 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { min-height: 100vh; margin: 0; background: var(--background); }
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(70rem 42rem at 92% -12%, rgb(249 142 9 / 9%), transparent 62%),
+    radial-gradient(56rem 40rem at -12% 38%, rgb(45 140 152 / 10%), transparent 64%),
+    var(--background);
+  background-repeat: no-repeat;
+}
 
 .visually-hidden {
   position: absolute !important;
