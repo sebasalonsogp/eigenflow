@@ -6,12 +6,24 @@ Notable user-facing changes to Eigenflow are recorded here.
 
 ### Added
 
-- Edge heat-flux traces that flow from warmer to cooler nodes during playback.
-- Live eigenmode weights beneath the Laplacian spectrum.
-- A sticky introduction with a four-step guide and a link to the source.
+- Edge flux traces whose dashes advance with integrated heat transfer.
+- A log-scale mixing curve with a `−κλ₂` slope guide and a dashed ghost of the
+  previous configuration.
+- A live readout of `λ₂`, time to mix to 1%, and distance from equilibrium.
+- Live eigenmode weights beneath the Laplacian spectrum, with stems that animate
+  when the structure changes.
+- Click-to-inject heat sources, a node inspector on hover, and a tinted Fiedler
+  split.
+- A link to the source repository.
 
 ### Changed
 
+- The simulation is the page's focus: a compact introduction above a lab layout
+  with the stage beside a control and readout rail.
+- Self-hosted, subsetted Inter and JetBrains Mono replace an undeclared system font
+  stack, with tabular figures and a minimum 11 px label size.
+- Bridge changes keep the playhead and the previous result on screen while the
+  spectrum is recomputed.
 - Heat now uses the perceptually uniform inferno palette with heat-scaled glow.
 - Curated experiments sample diffusion densely so playback follows the exact
   exponential solution.

@@ -39,6 +39,14 @@ samples without recomputing the model:
   edge, oriented from the warmer endpoint to the cooler one. Opacity is log-scaled
   over three decades below the run's peak flux, so a weak bridge remains visible
   without exaggerating its magnitude.
+- **Transferred heat** integrates that flux over time. Because playback interpolates
+  states linearly between samples, flux is linear on each interval and the
+  trapezoid rule is exact. Dashes advance in proportion to it, so their speed is
+  the instantaneous flux and scrubbing backwards runs them backwards.
+- **Distance from equilibrium** `‖x(t) - x̄‖ / ‖x(0) - x̄‖` is plotted on a log axis.
+  Its square is `Σ_{k≥2} c_k² exp(-2κλ_k t)`, so late-time decay has slope `-κλ₂`;
+  the chart draws that slope as a guide through the last well-resolved sample. The
+  reported mixing time is the first time this distance reaches 1%.
 - **Mode weights** `v_k^T x(t)` project the current state onto the returned
   eigenvectors. Under diffusion each weight decays as `exp(-kappa lambda_k t)`; the
   zero mode carries the conserved mean and never decays.
