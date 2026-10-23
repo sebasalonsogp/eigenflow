@@ -26,7 +26,7 @@
 }
 
 .network-edges line {
-  stroke: var(--edge);
+  stroke: #3f5557;
   stroke-linecap: round;
   transition: stroke-width 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -65,7 +65,7 @@
 }
 
 .network-node {
-  stroke: var(--node-stroke);
+  stroke: #dce8e5;
   stroke-width: 2;
   transition: stroke 300ms, stroke-width 300ms;
 }
@@ -87,13 +87,13 @@
 
 .network-nodes text,
 .node-inspector text {
-  font-family: var(--font-mono);
+  font-family: var(--font-tex);
   text-anchor: middle;
 }
 
 .network-nodes text {
   fill: var(--text-muted);
-  font-size: 9.5px;
+  font-size: 11.5px;
   pointer-events: none;
 }
 
@@ -106,7 +106,7 @@
 
 .node-inspector text {
   fill: var(--text-strong);
-  font-size: 10px;
+  font-size: 11.5px;
   font-weight: 600;
 }
 
@@ -117,7 +117,7 @@
 
 .node-inspector .node-inspector-hint {
   fill: var(--text-faint);
-  font-size: 8px;
+  font-size: 11.5px;
   font-weight: 400;
 }
 
@@ -130,9 +130,8 @@
   flex-wrap: wrap;
   gap: 4px 18px;
   color: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-variant-numeric: tabular-nums;
+  font-family: var(--font-tex);
+  font-size: 0.85rem;
 }
 
 .network-summary span:first-child { color: var(--text-strong); }
@@ -154,7 +153,7 @@
   max-width: 340px;
   margin: 0;
   color: var(--text-faint);
-  font-size: 0.75rem;
+  font-size: 0.88rem;
   line-height: 1.4;
 }
 
@@ -172,9 +171,8 @@
   width: min(250px, 100%);
   margin-left: auto;
   color: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
+  font-family: var(--font-tex);
+  font-size: 0.85rem;
 }
 
 .heat-key-gradient {
@@ -187,7 +185,6 @@
   grid-column: 1 / -1;
   font-size: inherit;
   text-align: right;
-  text-transform: none;
 }
 
 @media (max-width: 560px) {

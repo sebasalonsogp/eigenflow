@@ -16,7 +16,6 @@
   color: var(--text-muted);
   background: var(--surface);
   cursor: pointer;
-  transition: background 160ms, transform 160ms;
 }
 
 .playback-controls button:disabled {
@@ -37,8 +36,7 @@
   font-weight: 650;
 }
 
-.playback-primary:not(:disabled):active { transform: scale(0.97); }
-.playback-primary span { font-size: 0.75rem; }
+.playback-primary span { font-size: 0.88rem; }
 
 .playback-timeline {
   display: grid;
@@ -51,10 +49,8 @@
   justify-content: space-between;
   gap: 12px;
   color: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-family: var(--font-tex);
+  font-size: 0.85rem;
 }
 
 .playback-timeline output { color: var(--signal); }

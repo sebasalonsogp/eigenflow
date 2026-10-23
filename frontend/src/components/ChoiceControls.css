@@ -11,8 +11,8 @@
   padding: 8px 10px;
   color: var(--signal);
   background: var(--surface);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-family: var(--font-tex);
+  font-size: 0.9rem;
   font-weight: 500;
 }
 

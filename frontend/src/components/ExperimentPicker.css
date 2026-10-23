@@ -33,8 +33,8 @@
 .experiment-picker button span {
   margin-right: 7px;
   color: var(--signal);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-family: var(--font-tex);
+  font-size: 0.85rem;
 }
 
 .experiment-picker button:focus-visible {
@@ -56,10 +56,6 @@
 .experiment-question span {
   margin-right: 8px;
   color: var(--signal);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
 }
 
 @media (max-width: 760px) {
@@ -70,6 +66,6 @@
 @media (max-width: 420px) {
   .experiment-picker button {
     padding-inline: 8px;
-    font-size: 0.72rem;
+    font-size: 0.85rem;
   }
 }

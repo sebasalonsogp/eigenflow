@@ -14,33 +14,27 @@
 }
 
 .spectrum-kicker {
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   color: var(--signal);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .spectrum-header h2 {
   margin: 0;
   font-size: 1rem;
   font-weight: 560;
-  letter-spacing: -0.02em;
 }
 
 .spectrum-context {
   margin: 4px 0 0;
   color: var(--text-faint);
-  font-size: 0.75rem;
+  font-size: 0.88rem;
 }
 
 .spectrum-status {
   margin: 0;
   color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-family: var(--font-tex);
+  font-size: 0.88rem;
   text-align: right;
   white-space: nowrap;
 }
@@ -69,10 +63,8 @@
 
 .spectrum-weights-label {
   fill: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 7.5px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--font-tex);
+  font-size: 9.5px;
 }
 
 .spectrum-chart:focus-visible,
@@ -118,8 +110,8 @@
 
 .spectrum-mode text {
   fill: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 8px;
+  font-family: var(--font-tex);
+  font-size: 11.5px;
   text-anchor: middle;
 }
 
@@ -138,13 +130,13 @@
   border-left: 1px solid var(--line);
   padding-left: 8px;
   color: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-family: var(--font-tex);
+  font-size: 0.85rem;
 }
 
 .spectrum-values strong {
   color: var(--text-muted);
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
