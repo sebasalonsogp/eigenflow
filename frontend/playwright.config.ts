@@ -3,6 +3,8 @@ import { defineConfig, devices } from '@playwright/test'
 const isCI = Boolean(process.env.CI)
 const externalBaseURL = process.env.EIGENFLOW_E2E_BASE_URL
 const frontendBaseURL = externalBaseURL ?? 'http://127.0.0.1:4173'
+const apiPort = process.env.EIGENFLOW_E2E_API_PORT ?? '8000'
+const apiBaseURL = `http://127.0.0.1:${apiPort}`
 const pythonExecutable = process.platform === 'win32'
   ? '.venv\\Scripts\\python.exe'
   : '.venv/bin/python'
@@ -35,9 +37,9 @@ export default defineConfig({
   webServer: [
     {
       name: 'Python API',
-      command: `${pythonExecutable} -m uvicorn eigenflow_api.main:app --host 127.0.0.1 --port 8000`,
+      command: `${pythonExecutable} -m uvicorn eigenflow_api.main:app --host 127.0.0.1 --port ${apiPort}`,
       cwd: '../backend',
-      url: 'http://127.0.0.1:8000/api/health',
+      url: `${apiBaseURL}/api/health`,
       reuseExistingServer: Boolean(externalBaseURL) || !isCI,
       timeout: 120_000,
       stdout: 'pipe',
@@ -46,6 +48,7 @@ export default defineConfig({
       name: 'Vite frontend',
       command: 'npm run dev -- --host 127.0.0.1 --port 4173',
       url: 'http://127.0.0.1:4173',
+      env: { EIGENFLOW_API_URL: apiBaseURL },
       reuseExistingServer: !isCI,
       timeout: 120_000,
       stdout: 'pipe' as const,

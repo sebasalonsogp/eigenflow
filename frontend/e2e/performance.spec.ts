@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test'
 import type { AnalysisRequest, AnalysisResponse } from '../src/api'
 
 const FRAME_SAMPLE_MS = 2_000
+const API_PORT = process.env.EIGENFLOW_E2E_API_PORT ?? '8000'
 
 test('records supported-boundary interaction and animation performance', async ({
   browser,
@@ -17,7 +18,7 @@ test('records supported-boundary interaction and animation performance', async (
   })
   page.on('pageerror', (error) => browserIssues.push(`pageerror: ${error.message}`))
 
-  const response = await request.post('http://127.0.0.1:8000/api/analysis', {
+  const response = await request.post(`http://127.0.0.1:${API_PORT}/api/analysis`, {
     data: createSupportedBoundaryRequest(),
   })
   expect(response.ok()).toBe(true)
