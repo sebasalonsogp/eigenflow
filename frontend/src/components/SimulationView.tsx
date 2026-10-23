@@ -59,6 +59,7 @@ export function SimulationView({
         positions={positions}
         frame={frame}
         announceChanges={!playback.isPlaying}
+        flowing={playback.isPlaying}
         partition={
           mode === 'partition' && partition.status === 'available'
             ? partition.entries
@@ -73,7 +74,11 @@ export function SimulationView({
           announceChanges={!playback.isPlaying}
         />
       )}
-      <SpectrumView spectrum={analysis.spectrum} />
+      <SpectrumView
+        spectrum={analysis.spectrum}
+        initialState={analysis.diffusion.initialState}
+        state={frame.state}
+      />
     </>
   )
 }

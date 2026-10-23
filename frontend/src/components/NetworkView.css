@@ -4,10 +4,12 @@
   padding: 24px 20px 16px;
   border: 1px solid var(--line);
   background:
+    radial-gradient(ellipse at 50% 40%, rgb(249 142 9 / 7%), transparent 65%),
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
     var(--surface);
-  background-size: 24px 24px;
+  background-size: 100% 100%, 24px 24px, 24px 24px;
+  box-shadow: 0 40px 90px -60px rgb(249 142 9 / 45%);
 }
 
 .network-view svg {
@@ -31,6 +33,20 @@
 .network-edges line {
   stroke: var(--edge);
   stroke-linecap: round;
+}
+
+.network-flux line {
+  stroke: var(--flux);
+  stroke-dasharray: 3 6;
+  stroke-linecap: round;
+}
+
+.network-view--flowing .network-flux line {
+  animation: flux-flow 0.7s linear infinite;
+}
+
+@keyframes flux-flow {
+  to { stroke-dashoffset: -9; }
 }
 
 .network-node-source {
@@ -64,10 +80,36 @@
 }
 
 .network-nodes text {
-  fill: var(--text-faint);
+  fill: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 9.5px;
   text-anchor: middle;
+}
+
+.network-legend {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px 24px;
+  margin: 4px 0 16px;
+}
+
+.flux-key {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 300px;
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+.flux-key-swatch {
+  flex: 0 0 22px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--flux) 0 3px, transparent 3px 8px);
 }
 
 .heat-key {
@@ -75,8 +117,8 @@
   grid-template-columns: auto minmax(88px, 1fr) auto;
   gap: 10px;
   align-items: center;
-  max-width: 240px;
-  margin: 4px 0 16px auto;
+  width: min(240px, 100%);
+  margin-left: auto;
   color: var(--text-faint);
   font-family: var(--font-mono);
   font-size: 0.62rem;
@@ -86,7 +128,7 @@
 
 .heat-key-gradient {
   height: 5px;
-  background: linear-gradient(90deg, #00224e, #7d7c78, #fee838);
+  background: linear-gradient(90deg, #260c51, #7f1e6c, #cc4248, #f98e09, #f5f992);
 }
 
 .heat-key small {

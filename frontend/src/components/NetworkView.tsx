@@ -1,7 +1,8 @@
-import { interpolateCividis, scaleLinear, scaleSequential } from 'd3'
-import { useId } from 'react'
+import { interpolateInferno, scaleLinear } from 'd3'
+import { useId, useMemo } from 'react'
 import type { AnalysisResponse } from '../api'
 import type { DiffusionFrame } from '../diffusionFrame'
+import { computeEdgeFluxes, fluxStrength, maximumEdgeFlux } from '../edgeFlux'
 import type { FiedlerEntry } from '../fiedler'
 import { expandHeatForColor } from '../heatEncoding'
 import './NetworkView.css'
@@ -16,20 +17,35 @@ interface NetworkViewProps {
   positions: Record<string, NodePosition>
   frame: DiffusionFrame
   announceChanges?: boolean
+  flowing?: boolean
   partition?: FiedlerEntry[]
 }
 
 const VIEWBOX_WIDTH = 520
-const VIEWBOX_HEIGHT = 224
+// Leaves room below the lowest curated node (y = 198) for its label.
+const VIEWBOX_HEIGHT = 236
+// Inferno's darkest tail disappears into the page background, so start above it.
+const COLOR_FLOOR = 0.14
+const MINIMUM_VISIBLE_FLUX = 0.04
+
+function heatColor(expandedHeat: number): string {
+  return interpolateInferno(COLOR_FLOOR + (0.98 - COLOR_FLOOR) * expandedHeat)
+}
 
 export function NetworkView({
   analysis,
   positions,
   frame,
   announceChanges = true,
+  flowing = false,
   partition,
 }: NetworkViewProps) {
   const titleId = `${useId().replaceAll(':', '')}-title`
+  const { nodeOrder, graph, diffusion } = analysis
+  const fluxReference = useMemo(
+    () => maximumEdgeFlux(nodeOrder, graph.edges, diffusion.states),
+    [diffusion.states, graph.edges, nodeOrder],
+  )
   if (analysis.nodeOrder.length === 0 || frame.state.length === 0) {
     return (
       <figure className="network-view network-view--empty" role="status">
@@ -46,21 +62,37 @@ export function NetworkView({
   const hottestId = analysis.nodeOrder[hottestIndex]
   const maximumInitialHeat = Math.max(...analysis.diffusion.initialState, 1)
   const maximumWeight = Math.max(...analysis.graph.edges.map((edge) => edge.weight), 1)
-  const heatColor = scaleSequential(interpolateCividis).domain([0, 1])
   const edgeWidth = scaleLinear().domain([0, maximumWeight]).range([1, 3.25])
   const descriptionId = `${titleId}-description`
+  const glowFilterId = `${titleId}-glow`
 
   const positionedNodes = analysis.nodeOrder.map((nodeId, index) => ({
     id: nodeId,
     heat: state[index],
+    colorHeat: expandHeatForColor(state[index], maximumInitialHeat),
     position: positions[nodeId] ?? circularPosition(index, analysis.nodeOrder.length),
   }))
   const positionById = new Map(positionedNodes.map((node) => [node.id, node.position]))
   const partitionByNodeId = new Map(partition?.map((entry) => [entry.nodeId, entry.group]))
   const totalHeat = state.reduce((sum, heat) => sum + heat, 0)
+  const visibleFluxes = fluxReference > 0
+    ? computeEdgeFluxes(nodeOrder, graph.edges, state)
+      .map((flux) => ({ ...flux, strength: fluxStrength(flux.magnitude, fluxReference) }))
+      .filter((flux) => flux.strength >= MINIMUM_VISIBLE_FLUX)
+    : []
+  const weightByEdgeId = new Map(graph.edges.map((edge) => [
+    `${edge.source}-${edge.target}`,
+    edge.weight,
+  ]))
 
   return (
-    <figure className={`network-view${partition ? ' network-view--partition' : ''}`}>
+    <figure
+      className={[
+        'network-view',
+        partition && 'network-view--partition',
+        flowing && 'network-view--flowing',
+      ].filter(Boolean).join(' ')}
+    >
       <svg
         viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
         role="img"
@@ -72,6 +104,23 @@ export function NetworkView({
           {' '}{sourceId}; at time {time.toFixed(2)}, {hottestId} is hottest.
           {partition && ' The Fiedler partition overlay is active.'}
         </desc>
+        <defs>
+          <filter id={glowFilterId} x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="7" />
+          </filter>
+        </defs>
+        <g className="network-glow" filter={`url(#${glowFilterId})`} aria-hidden="true">
+          {!partition && positionedNodes.map((node) => (
+            <circle
+              key={node.id}
+              cx={node.position.x}
+              cy={node.position.y}
+              r={12 + 14 * node.colorHeat}
+              fill={heatColor(node.colorHeat)}
+              opacity={0.7 * node.colorHeat}
+            />
+          ))}
+        </g>
         <g className="network-edges" aria-hidden="true">
           {analysis.graph.edges.map((edge) => {
             const source = positionById.get(edge.source)
@@ -90,6 +139,25 @@ export function NetworkView({
             )
           })}
         </g>
+        <g className="network-flux" aria-hidden="true">
+          {!partition && visibleFluxes.map((flux) => {
+            const from = positionById.get(flux.from)
+            const to = positionById.get(flux.to)
+            if (!from || !to) return null
+            return (
+              <line
+                key={flux.edgeId}
+                data-flux-edge={flux.edgeId}
+                x1={from.x}
+                y1={from.y}
+                x2={to.x}
+                y2={to.y}
+                strokeWidth={edgeWidth(weightByEdgeId.get(flux.edgeId) ?? 0) + 1.25}
+                strokeOpacity={flux.strength}
+              />
+            )
+          })}
+        </g>
         <g className="network-nodes" aria-hidden="true">
           {positionedNodes.map((node) => (
             <g
@@ -98,26 +166,34 @@ export function NetworkView({
               data-partition={partitionByNodeId.get(node.id)}
               transform={`translate(${node.position.x} ${node.position.y})`}
             >
-              {node.id === sourceId && <circle className="network-node-source" r="17" />}
+              {node.id === sourceId && <circle className="network-node-source" r="18" />}
               <circle
                 className="network-node"
-                r="11"
-                fill={heatColor(expandHeatForColor(node.heat, maximumInitialHeat))}
+                r="12"
+                fill={heatColor(node.colorHeat)}
               />
-              <text y="27">{node.id}</text>
+              <text y="29">{node.id}</text>
             </g>
           ))}
         </g>
       </svg>
 
-      <div
-        className="heat-key"
-        aria-label="Heat scale from cooler to warmer with square-root color spacing"
-      >
-        <span>Cooler</span>
-        <span className="heat-key-gradient" aria-hidden="true" />
-        <span>Warmer</span>
-        <small>√ color scale keeps low heat visible</small>
+      <div className="network-legend">
+        <div
+          className="heat-key"
+          aria-label="Heat scale from cooler to warmer with square-root color spacing"
+        >
+          <span>Cooler</span>
+          <span className="heat-key-gradient" aria-hidden="true" />
+          <span>Warmer</span>
+          <small>√ color scale keeps low heat visible</small>
+        </div>
+        {!partition && (
+          <p className="flux-key">
+            <span className="flux-key-swatch" aria-hidden="true" />
+            Dashes trace heat flux w·Δx from warmer to cooler nodes, log-scaled
+          </p>
+        )}
       </div>
 
       <figcaption

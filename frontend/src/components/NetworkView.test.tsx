@@ -152,3 +152,53 @@ test('applies an explicit Fiedler membership overlay in node order', () => {
   )
   expect(screen.getByRole('img', { name: /fiedler partition overlay is active/i })).toBeVisible()
 })
+
+test('traces heat flux from the warmer node toward the cooler node', () => {
+  const { container } = render(
+    <NetworkView
+      analysis={ANALYSIS_FIXTURE}
+      positions={{
+        a: { x: 100, y: 90 },
+        b: { x: 300, y: 90 },
+      }}
+      frame={{ time: 0.5, state: [0.25, 0.75] }}
+      flowing
+    />,
+  )
+
+  const flux = container.querySelector('[data-flux-edge="a-b"]')
+  expect(flux).toHaveAttribute('x1', '300')
+  expect(flux).toHaveAttribute('x2', '100')
+  expect(container.querySelector('figure')).toHaveClass('network-view--flowing')
+  expect(screen.getByText(/dashes trace heat flux/i)).toBeVisible()
+})
+
+test('omits flux traces once neighbouring nodes reach equilibrium', () => {
+  const { container } = render(
+    <NetworkView
+      analysis={ANALYSIS_FIXTURE}
+      positions={{}}
+      frame={{ time: 1, state: [0.5, 0.5] }}
+    />,
+  )
+
+  expect(container.querySelector('[data-flux-edge]')).not.toBeInTheDocument()
+  expect(container.querySelector('figure')).not.toHaveClass('network-view--flowing')
+})
+
+test('hides heat flux while the Fiedler partition overlay is active', () => {
+  const { container } = render(
+    <NetworkView
+      analysis={ANALYSIS_FIXTURE}
+      positions={{}}
+      frame={{ time: 0, state: [1, 0] }}
+      partition={[
+        { nodeId: 'a', value: Math.SQRT1_2, group: 'positive' },
+        { nodeId: 'b', value: -Math.SQRT1_2, group: 'negative' },
+      ]}
+    />,
+  )
+
+  expect(container.querySelector('[data-flux-edge]')).not.toBeInTheDocument()
+  expect(screen.queryByText(/dashes trace heat flux/i)).not.toBeInTheDocument()
+})
