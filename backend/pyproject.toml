@@ -4,7 +4,7 @@ version = "1.0.0"
 description = "Scientific-computing API for Eigenflow's spectral graph visualizations"
 readme = "README.md"
 authors = [
-    { name = "sebastian-padstats", email = "sebastian@padstats.com" }
+    { name = "sebasalonsogp", email = "62522906+sebasalonsogp@users.noreply.github.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [
