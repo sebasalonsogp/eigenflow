@@ -1,4 +1,5 @@
 import type { AnalysisRequest, GraphEdge } from '../api'
+import { uniformTimes } from './sampling'
 import type { ExperimentDefinition } from './types'
 
 const COMMUNITY_SIZE = 4
@@ -34,7 +35,7 @@ export function createBottleneckRequest({
       ...cliqueEdges(rightNodes),
     ],
     heatSource,
-    times: [0, 0.25, 0.75, 1.5, 3, 6, 12, 24],
+    times: uniformTimes(24, 0.25),
     diffusionCoefficient: 1,
   }
 }
