@@ -49,7 +49,7 @@ Two compact comparisons test whether the same model generalizes:
 | Signal | Evidence in the project |
 | --- | --- |
 | Mathematical modeling | Explicit `A`, `D`, and `L = D - A`; symmetric eigendecomposition; spectral heat solution; honest handling of numerical tolerance and degenerate eigenspaces. |
-| Visualization craft | Custom D3 network and spectrum views, synchronized playback and computed prose, edge flux traces driven by integrated heat transfer, a log-scale mixing curve with a `−κλ₂` slope guide, live eigenmode weights, stale-while-revalidate recomputation, self-hosted subsetted Inter and JetBrains Mono, a perceptually uniform heat palette, Fiedler encoding, and responsive interaction. |
+| Visualization craft | Custom D3 network and spectrum views, synchronized playback and computed prose, edge flux traces driven by integrated heat transfer, a log-scale mixing curve with a `−κλ₂` slope guide, live eigenmode weights, stale-while-revalidate recomputation, LaTeX-style Computer Modern typography for labels, numbers, and math, a perceptually uniform heat palette, Fiedler encoding, and responsive interaction. |
 | Engineering judgment | Typed API boundaries, stale-request cancellation, local frame interpolation, invariant-based tests, measured performance budgets, CI, and one non-root production container. |
 
 The project is intentionally **not** a general graph editor or analytics platform.
@@ -186,7 +186,10 @@ compose.yaml   local production workflow
 
 ## Credits
 
-Interface type is set in [Inter](https://github.com/rsms/inter) and
-[JetBrains Mono](https://github.com/JetBrains/JetBrainsMono), both under the SIL Open
-Font License 1.1. Subsetted copies and their licenses live in
+Running text is set in [Inter](https://github.com/rsms/inter); labels, numbers, and
+math use [CMU Serif](https://ctan.org/pkg/cm-unicode), the Unicode build of Donald
+Knuth's Computer Modern, both under the SIL Open Font License 1.1. The `≈` glyph comes
+from [Latin Modern Math](https://ctan.org/pkg/lm-math) (GUST Font License).
+`scripts/build_cmu_fonts.py` regenerates the subsets, including TeX-style subscript
+digits that Computer Modern does not ship; files and licenses live in
 `frontend/src/assets/fonts/`.

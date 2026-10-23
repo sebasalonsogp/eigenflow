@@ -20,8 +20,10 @@ Notable user-facing changes to Eigenflow are recorded here.
 
 - The simulation is the page's focus: a compact introduction above a lab layout
   with the stage beside a control and readout rail.
-- Self-hosted, subsetted Inter and JetBrains Mono replace an undeclared system font
-  stack, with tabular figures and a minimum 11 px label size.
+- Typography follows a LaTeX paper: labels, numbers, and math in Computer Modern
+  (CMU Serif) in sentence case, running text in Inter, all self-hosted and
+  subsetted. This replaces an undeclared system font stack and all-caps monospace
+  labels.
 - Bridge changes keep the playhead and the previous result on screen while the
   spectrum is recomputed.
 - Heat now uses the perceptually uniform inferno palette with heat-scaled glow.

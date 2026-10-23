@@ -124,9 +124,11 @@ remounting it.
 | 2 | 32.0 ms | 59.999 | 16.7 ms | 16.8 ms | 0% |
 | 3 | 28.9 ms | 60.002 | 16.8 ms | 16.8 ms | 0% |
 
-The JavaScript bundle measured 86.93 kB Brotli (limit 105 kB) and CSS exactly
-5.00 kB (limit 5 kB). The CSS budget is now fully used; further styling needs either
-equivalent removals or a documented budget decision.
+The JavaScript bundle measured 86.93 kB Brotli (limit 105 kB) and CSS 4.81 kB
+(limit 5 kB). Dropping the all-caps monospace label treatment for Computer Modern
+sentence case freed CSS headroom; the four self-hosted woff2 files (Inter 63 kB and
+CMU Serif roman, italic, and bold at 26–31 kB) are cached separately and are not
+counted by the bundle budget.
 
 ## Optimization evidence
 
