@@ -1,4 +1,5 @@
 import type { AnalysisRequest, GraphEdge } from '../api'
+import { uniformTimes } from './sampling'
 import type { ChoiceControl, ExperimentDefinition } from './types'
 
 const NODE_COUNT = 6
@@ -34,7 +35,7 @@ export function createPathCompleteRequest({
     nodes: NODE_IDS.map((id) => ({ id })),
     edges: topology === 'path' ? pathEdges() : completeEdges(),
     heatSource,
-    times: [0, 0.1, 0.25, 0.5, 1, 2, 4, 8, 16],
+    times: uniformTimes(16, 0.125),
     diffusionCoefficient: 1,
   }
 }

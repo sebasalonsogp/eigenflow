@@ -1,47 +1,19 @@
-.choice-controls {
-  display: grid;
-  grid-template-columns: minmax(112px, 0.7fr) minmax(210px, 1.3fr) auto;
-  gap: 20px;
-  align-items: end;
-  border: 1px solid var(--line);
-  border-bottom: 0;
-  padding: 14px 16px;
-  background: var(--surface-raised);
-}
-
-.choice-context,
-.choice-control {
-  margin: 0;
-}
-
+/* Card, field, button, and focus rules are shared in BottleneckControls.css. */
 .choice-context {
   display: grid;
   gap: 8px;
-}
-
-.choice-context span,
-.choice-control > span {
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  margin: 0;
 }
 
 .choice-context strong {
-  min-height: 36px;
   border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
   padding: 8px 10px;
   color: var(--signal);
   background: var(--surface);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-family: var(--font-tex);
+  font-size: 0.9rem;
   font-weight: 500;
-}
-
-.choice-control {
-  display: grid;
-  gap: 7px;
 }
 
 .choice-control > div {
@@ -49,48 +21,9 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
-.choice-control button,
-.choice-reset {
-  min-height: var(--control-height);
-  border: 1px solid var(--line-strong);
-  border-radius: 0;
-  padding: 0 12px;
-  color: var(--text-muted);
-  background: var(--surface);
-  cursor: pointer;
-}
-
-.choice-control button + button {
-  border-left: 0;
-}
+.choice-control button + button { border-left: 0; }
 
 .choice-control button[aria-pressed='true'] {
   color: var(--background);
   background: var(--signal);
-}
-
-.choice-reset:disabled {
-  color: var(--text-faint);
-  cursor: not-allowed;
-  opacity: 0.55;
-}
-
-.choice-control button:focus-visible,
-.choice-reset:focus-visible {
-  position: relative;
-  z-index: 1;
-  outline: 2px solid var(--signal);
-  outline-offset: 3px;
-}
-
-@media (max-width: 560px) {
-  .choice-controls {
-    grid-template-columns: 1fr auto;
-    margin-inline: -12px;
-  }
-
-  .choice-control {
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
 }

@@ -56,7 +56,7 @@ try {
   await timeline.fill('1.5')
   await page.locator('output[for="simulation-time"]').filter({ hasText: 't = 1.50' }).waitFor()
   await page.waitForTimeout(800)
-  await page.locator('.hero-copy').click({ position: { x: 24, y: 24 } })
+  await page.locator('.intro').click({ position: { x: 24, y: 24 } })
   await page.screenshot({ fullPage: true, path: screenshotPath })
 
   await page.getByRole('button', { name: /reset timeline/i }).click()
@@ -69,8 +69,8 @@ try {
   await page.getByRole('button', { name: /fiedler partition/i }).click()
   await page.locator('.partition-membership').waitFor()
   await page.waitForTimeout(700)
-  await page.locator('.hero-copy').click({ position: { x: 24, y: 24 } })
-  await page.locator('.experiment-panel').screenshot({ path: fiedlerScreenshotPath })
+  await page.locator('.intro').click({ position: { x: 24, y: 24 } })
+  await page.locator('.lab').screenshot({ path: fiedlerScreenshotPath })
   await page.waitForTimeout(800)
   await page.getByRole('button', { name: /heat diffusion/i }).click()
 

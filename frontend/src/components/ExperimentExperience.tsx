@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import type { AnalysisResponse } from '../api'
 import {
   DEFAULT_EXPERIMENT_ID,
   EXPERIMENTS,
@@ -6,6 +7,7 @@ import {
   type ExperimentId,
 } from '../experiments'
 import {
+  analysisFitsLayout,
   createDefaultExperimentState,
   createExperimentRequest,
   createSimulationKey,
@@ -35,42 +37,59 @@ export function ExperimentExperience() {
   )
   const analysis = useAnalysis(request, 120)
 
+  // The narrative mixes parameters with computed values, so while a new result
+  // loads it keeps the last pair that actually belong together.
+  const [settled, setSettled] = useState<{
+    analysis: AnalysisResponse
+    state: ActiveExperimentState
+  }>()
+  if (analysis.status === 'success' && settled?.analysis !== analysis.data) {
+    setSettled({ analysis: analysis.data, state: experimentState })
+  }
+  const narrative = analysis.status === 'success'
+    ? { analysis: analysis.data, state: experimentState }
+    : analysis.status === 'loading'
+      && settled?.state.id === experimentState.id
+      && analysisFitsLayout(settled.analysis, activeExperiment.positions)
+      ? settled
+      : undefined
+
   return (
     <>
-      <section className="hero" id="top" aria-labelledby="hero-title">
-        <div className="hero-copy">
-          <p className="eyebrow">Spectral graph diffusion</p>
-          <h1 id="hero-title">Structure shapes how signals move.</h1>
-          <p className="hero-summary">
-            An interactive study of heat flow, bottlenecks, and the Laplacian
-            eigenmodes that make a network’s hidden geometry visible.
+      <section className="intro" id="top" aria-labelledby="hero-title">
+        <div>
+          <p className="eyebrow">Spectral graph diffusion lab</p>
+          <h1 id="hero-title">
+            Structure shapes how <span className="hero-accent">signals move.</span>
+          </h1>
+          <p className="intro-summary">
+            Inject heat, reshape the network, and watch the Laplacian eigenmodes
+            explain what moves—and what stalls.
           </p>
-          <div className="formula" aria-label="x of t equals e to the negative L t times x of zero">
-            x(t) = e<sup>−Lt</sup>x(0)
-          </div>
         </div>
+        <p className="formula" aria-label="x of t equals e to the negative kappa L t times x of zero">
+          <var>x</var>(<var>t</var>) = <var>e</var>
+          <sup>−<var>κ</var><var>L</var><var>t</var></sup>
+          <var>x</var>(0)
+        </p>
+      </section>
 
-        <section
-          className="experiment-panel"
-          id="experiment-workspace"
-          aria-label="Interactive experiment"
-          tabIndex={-1}
-        >
-          <ExperimentPicker
-            experiments={EXPERIMENT_OPTIONS}
-            activeId={experimentState.id}
-            onSelect={(id) => {
-              if (id !== experimentState.id) {
-                setExperimentState(createDefaultExperimentState(id))
-              }
-            }}
-          />
-          <div className="experiment-label">
-            <span>
-              Experiment {activeExperiment.sequence} · {activeExperiment.label}
-            </span>
-            <span>Live simulation</span>
-          </div>
+      <section
+        className="lab"
+        id="experiment-workspace"
+        aria-label="Interactive experiment"
+        tabIndex={-1}
+      >
+        <ExperimentPicker
+          experiments={EXPERIMENT_OPTIONS}
+          activeId={experimentState.id}
+          onSelect={(id) => {
+            if (id !== experimentState.id) {
+              setExperimentState(createDefaultExperimentState(id))
+            }
+          }}
+        />
+        <div className="lab-grid">
           <ActiveExperimentControls
             state={experimentState}
             request={request}
@@ -80,14 +99,21 @@ export function ExperimentExperience() {
             key={experimentState.id}
             state={analysis}
             experimentId={experimentState.id}
+            title={`Experiment ${activeExperiment.sequence} · ${activeExperiment.label}`}
             simulationKey={createSimulationKey(experimentState)}
             positions={activeExperiment.positions}
+            onSelectSource={experimentState.id === 'bottleneck'
+              ? (heatSource) => setExperimentState({
+                ...experimentState,
+                parameters: { ...experimentState.parameters, heatSource },
+              })
+              : undefined}
           />
-        </section>
+        </div>
       </section>
 
-      {analysis.status === 'success' ? (
-        <ExperimentNarrative analysis={analysis.data} state={experimentState} />
+      {narrative ? (
+        <ExperimentNarrative analysis={narrative.analysis} state={narrative.state} />
       ) : (
         <ProjectIntent />
       )}

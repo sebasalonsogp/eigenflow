@@ -64,3 +64,36 @@ test('handles a graph with no second eigenvalue', () => {
 
   expect(screen.getByText(/one-node graph · λ₂ is not defined/i)).toBeVisible()
 })
+
+test('shows each mode decaying toward the conserved constant mode', () => {
+  const { container, rerender } = render(
+    <SpectrumView
+      spectrum={ANALYSIS_FIXTURE.spectrum}
+      initialState={[1, 0]}
+      state={[1, 0]}
+    />,
+  )
+
+  const barHeight = (index: number) => Number(
+    container.querySelector(`[data-weight-index="${index}"]`)?.getAttribute('height'),
+  )
+  expect(barHeight(0)).toBeCloseTo(barHeight(1))
+  expect(barHeight(1)).toBeGreaterThan(0)
+  expect(screen.getByText(/bars show each mode’s live weight/i)).toBeVisible()
+
+  rerender(
+    <SpectrumView
+      spectrum={ANALYSIS_FIXTURE.spectrum}
+      initialState={[1, 0]}
+      state={[0.5, 0.5]}
+    />,
+  )
+  expect(barHeight(0)).toBeGreaterThan(0)
+  expect(barHeight(1)).toBeCloseTo(0)
+})
+
+test('omits mode weights when no heat state is supplied', () => {
+  const { container } = render(<SpectrumView spectrum={ANALYSIS_FIXTURE.spectrum} />)
+
+  expect(container.querySelector('[data-weight-index]')).not.toBeInTheDocument()
+})

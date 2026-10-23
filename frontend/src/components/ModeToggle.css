@@ -1,12 +1,9 @@
 .mode-toggle {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   align-items: center;
-  border: 1px solid var(--line);
-  border-bottom: 0;
-  padding: 10px 16px;
-  background: var(--surface-raised);
+  justify-content: flex-end;
 }
 
 .mode-toggle-buttons {
@@ -14,17 +11,20 @@
 }
 
 .mode-toggle button {
-  min-height: var(--control-height);
+  min-height: 32px;
   border: 1px solid var(--line-strong);
   border-radius: 0;
   padding: 0 11px;
+  font-size: 0.85rem;
   color: var(--text-faint);
   background: var(--surface);
   cursor: pointer;
 }
 
+.mode-toggle button:first-child { border-radius: var(--radius) 0 0 var(--radius); }
 .mode-toggle button + button {
   border-left: 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
 }
 
 .mode-toggle button[aria-pressed='true'] {
@@ -47,7 +47,8 @@
 .mode-limitation {
   margin: 0;
   color: var(--text-faint);
-  font-size: 0.72rem;
+  max-width: 320px;
+  font-size: 0.9rem;
   line-height: 1.45;
 }
 
@@ -65,17 +66,15 @@
 
 .partition-membership dt {
   color: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-family: var(--font-tex);
+  font-size: 0.85rem;
 }
 
 .partition-membership dd {
   margin: 2px 0 0;
   overflow: hidden;
   color: var(--text-muted);
-  font-size: 0.68rem;
+  font-size: 0.9rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -89,12 +88,10 @@
 }
 
 @media (max-width: 560px) {
-  .mode-toggle {
-    grid-template-columns: 1fr;
-    margin-inline: -12px;
-  }
+  .mode-toggle { justify-content: stretch; width: 100%; }
 
   .mode-toggle-buttons {
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
   }

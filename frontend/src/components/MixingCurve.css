@@ -1,0 +1,83 @@
+.mixing-curve { display: grid; gap: 4px; }
+
+.mixing-curve-labels,
+.mixing-curve-labels > span:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 14px;
+}
+
+.mixing-curve-labels {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
+.mixing-curve-key::before {
+  display: inline-block;
+  width: 14px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border-top: 1.5px dashed var(--text-muted);
+  content: '';
+}
+
+.mixing-curve-key--guide::before { border-top-color: var(--partition-negative); }
+
+.mixing-curve-plot {
+  position: relative;
+  height: 52px;
+  border-bottom: 1px solid var(--line);
+}
+
+.mixing-curve-plot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.mixing-curve-area { fill: rgb(249 142 9 / 10%); }
+
+.mixing-curve-line,
+.mixing-curve-ghost,
+.mixing-curve-guide {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.mixing-curve-line {
+  stroke: var(--signal);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.mixing-curve-ghost {
+  stroke: var(--text-muted);
+  stroke-dasharray: 4 4;
+  stroke-width: 1.5;
+  opacity: 0.7;
+}
+
+.mixing-curve-guide {
+  stroke: var(--partition-negative);
+  stroke-dasharray: 2 5;
+  stroke-width: 1.5;
+}
+
+.mixing-curve-playhead {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border: 2px solid var(--background);
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 4px rgb(242 184 75 / 22%), 0 0 18px rgb(249 142 9 / 70%);
+  pointer-events: none;
+}
+
+.mixing-curve-cursor {
+  stroke: rgb(242 184 75 / 35%);
+  vector-effect: non-scaling-stroke;
+}

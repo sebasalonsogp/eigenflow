@@ -29,11 +29,16 @@ function App() {
           <span className="brand-mark" aria-hidden="true">λ</span>
           Eigenflow
         </a>
-        <div className={`engine-status engine-status--${health.status}`} role="status">
-          <span aria-hidden="true" />
-          {health.status === 'checking' && 'Checking numerical engine'}
-          {health.status === 'ready' && 'Numerical engine ready'}
-          {health.status === 'unavailable' && 'Start the Python API to connect'}
+        <div className="topbar-actions">
+          <div className={`engine-status engine-status--${health.status}`} role="status">
+            <span aria-hidden="true" />
+            {health.status === 'checking' && 'Checking numerical engine'}
+            {health.status === 'ready' && 'Numerical engine ready'}
+            {health.status === 'unavailable' && 'Start the Python API to connect'}
+          </div>
+          <a className="source-link" href="https://github.com/sebasalonsogp/eigenflow">
+            Source
+          </a>
         </div>
       </header>
 

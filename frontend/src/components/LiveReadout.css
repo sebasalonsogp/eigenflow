@@ -1,0 +1,54 @@
+.live-readout {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 6px 16px;
+  background: var(--surface-raised);
+}
+
+.live-readout dl { margin: 0; }
+
+.live-readout dl > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 12px;
+  padding: 10px 0;
+}
+
+.live-readout dl > div + div { border-top: 1px solid var(--line); }
+
+.live-readout dt {
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.live-readout dd {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 0.9rem;
+}
+
+.live-readout-primary dd {
+  color: var(--signal);
+  font-size: 1.25rem;
+}
+
+.live-readout-meter {
+  display: block;
+  width: 100%;
+  height: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.live-readout-meter span {
+  display: block;
+  height: 100%;
+  background: var(--heat-accent);
+  transform-origin: left;
+}
+
+.live-readout dl > div:last-child dd { flex: 1 0 100%; text-align: right; }

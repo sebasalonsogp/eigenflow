@@ -1,47 +1,60 @@
-.bottleneck-controls {
+/* Shared by the bottleneck and choice control cards, which always ship together. */
+.bottleneck-controls,
+.choice-controls {
   display: grid;
-  grid-template-columns: minmax(128px, 0.7fr) minmax(180px, 1.3fr) auto;
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
   align-items: end;
   border: 1px solid var(--line);
-  border-bottom: 0;
+  border-radius: var(--radius);
   padding: 14px 16px;
   background: var(--surface-raised);
 }
 
-.control-field {
+.control-field,
+.choice-control {
   display: grid;
   gap: 7px;
   min-width: 0;
+  margin: 0;
 }
 
-.control-field label {
+.control-field--bridge,
+.choice-control {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+.control-field label,
+.choice-context span,
+.choice-control > span,
+.control-range-labels {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-family: var(--font-tex);
+  font-size: 0.85rem;
 }
 
-.control-field output {
-  color: var(--signal);
-}
+.control-range-labels { color: var(--text-faint); }
+.control-field output { color: var(--signal); }
 
 .control-field select,
-.bottleneck-controls button {
+.bottleneck-controls button,
+.choice-controls button {
   min-height: var(--control-height);
   border: 1px solid var(--line-strong);
-  border-radius: 0;
-  color: var(--text-strong);
+  border-radius: var(--radius);
+  padding: 0 12px;
+  color: var(--text-muted);
   background: var(--surface);
+  cursor: pointer;
 }
 
 .control-field select {
   width: 100%;
-  padding: 0 10px;
+  color: var(--text-strong);
 }
 
 .control-field input[type='range'] {
@@ -49,23 +62,8 @@
   accent-color: var(--signal);
 }
 
-.control-range-labels {
-  display: flex;
-  justify-content: space-between;
-  color: var(--text-faint);
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.bottleneck-controls button {
-  padding: 0 12px;
-  color: var(--text-muted);
-  cursor: pointer;
-}
-
-.bottleneck-controls button:disabled {
+.bottleneck-controls button:disabled,
+.choice-reset:disabled {
   color: var(--text-faint);
   cursor: not-allowed;
   opacity: 0.55;
@@ -73,19 +71,10 @@
 
 .control-field select:focus-visible,
 .control-field input:focus-visible,
-.bottleneck-controls button:focus-visible {
+.bottleneck-controls button:focus-visible,
+.choice-controls button:focus-visible {
+  position: relative;
+  z-index: 1;
   outline: 2px solid var(--signal);
   outline-offset: 3px;
-}
-
-@media (max-width: 560px) {
-  .bottleneck-controls {
-    grid-template-columns: 1fr auto;
-    margin-inline: -12px;
-  }
-
-  .control-field--bridge {
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
 }

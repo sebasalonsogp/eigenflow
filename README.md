@@ -22,9 +22,12 @@ and both the spectral gap and cross-community mixing increase.
 
 The main experiment is deliberately simple enough to understand in seconds:
 
-1. Choose where heat enters the graph.
-2. Play or scrub diffusion and track the percentage of heat crossing the bridge.
-3. Change the single bridge joining two dense communities.
+1. Click any node, or use the selector, to choose where heat enters the graph.
+2. Play or scrub diffusion: dashes advance with the heat each edge has carried, and
+   a log-scale mixing curve shows the distance from equilibrium decaying at the
+   rate `κλ₂` the spectrum predicts.
+3. Pause anywhere and drag the bridge: heat redistributes in place, `λ₂` and the
+   time to mix update live, and the previous curve stays as a dashed comparison.
 4. Reveal the Fiedler partition that separates those communities spectrally.
 
 Two compact comparisons test whether the same model generalizes:
@@ -46,7 +49,7 @@ Two compact comparisons test whether the same model generalizes:
 | Signal | Evidence in the project |
 | --- | --- |
 | Mathematical modeling | Explicit `A`, `D`, and `L = D - A`; symmetric eigendecomposition; spectral heat solution; honest handling of numerical tolerance and degenerate eigenspaces. |
-| Visualization craft | Custom D3 network and spectrum views, synchronized playback and computed prose, a live community-balance readout, perceptually expanded low-heat color, Fiedler encoding, and responsive interaction. |
+| Visualization craft | Custom D3 network and spectrum views, synchronized playback and computed prose, edge flux traces driven by integrated heat transfer, a log-scale mixing curve with a `−κλ₂` slope guide, live eigenmode weights, stale-while-revalidate recomputation, LaTeX-style Computer Modern typography for labels, numbers, and math, a perceptually uniform heat palette, Fiedler encoding, and responsive interaction. |
 | Engineering judgment | Typed API boundaries, stale-request cancellation, local frame interpolation, invariant-based tests, measured performance budgets, CI, and one non-root production container. |
 
 The project is intentionally **not** a general graph editor or analytics platform.
@@ -123,18 +126,20 @@ npm run dev
 ```
 
 Vite proxies `/api` to FastAPI during development. The production image serves the
-compiled frontend and API from the same origin.
+compiled frontend and API from the same origin. If port 8000 is taken, run the API on
+another port and set `EIGENFLOW_API_URL` (dev proxy) or `EIGENFLOW_E2E_API_PORT`
+(browser tests) to match.
 
 ## Verification evidence
 
 The current release candidate includes:
 
 - 57 backend tests with 99% line coverage and numerical-invariant checks;
-- 77 frontend tests plus desktop and mobile Chromium coverage of the primary
+- 98 frontend tests plus desktop and mobile Chromium coverage of the primary
   recruiter journey;
 - automated and manual WCAG 2.1 AA, keyboard, reduced-motion, and responsive checks;
 - a 30-node / 435-edge / 240-sample boundary benchmark with 10.08–12.46 ms median
-  local API latency and approximately 60 FPS playback; and
+  local API latency, 28.9–32.0 ms slider feedback, and 60 FPS playback; and
 - enforced Brotli budgets of 105 kB for JavaScript and 5 kB for CSS.
 
 Run the main quality gates with:
@@ -178,3 +183,13 @@ compose.yaml   local production workflow
 - [Mathematical model and numerical policy](docs/math-model.md)
 - [Accessibility verification](docs/accessibility.md)
 - [Supported-boundary performance](docs/performance.md)
+
+## Credits
+
+Running text is set in [Inter](https://github.com/rsms/inter); labels, numbers, and
+math use [CMU Serif](https://ctan.org/pkg/cm-unicode), the Unicode build of Donald
+Knuth's Computer Modern, both under the SIL Open Font License 1.1. The `≈` glyph comes
+from [Latin Modern Math](https://ctan.org/pkg/lm-math) (GUST Font License).
+`scripts/build_cmu_fonts.py` regenerates the subsets, including TeX-style subscript
+digits that Computer Modern does not ship; files and licenses live in
+`frontend/src/assets/fonts/`.

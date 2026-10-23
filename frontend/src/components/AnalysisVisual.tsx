@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import type { AnalysisResponse } from '../api'
 import type { ExperimentId } from '../experiments'
+import { analysisFitsLayout } from '../experiments/state'
 import type { AnalysisState } from '../useAnalysis'
 import type { NetworkMode } from './ModeToggle'
 import { SimulationView } from './SimulationView'
@@ -7,27 +9,50 @@ import { SimulationView } from './SimulationView'
 interface AnalysisVisualProps {
   state: AnalysisState
   experimentId: ExperimentId
+  title: string
   simulationKey: string
   positions: Record<string, { x: number; y: number }>
+  onSelectSource?: (nodeId: string) => void
+}
+
+interface AnalysisHistory {
+  current?: AnalysisResponse
+  previous?: AnalysisResponse
 }
 
 export function AnalysisVisual({
   state,
   experimentId,
+  title,
   simulationKey,
   positions,
+  onSelectSource,
 }: AnalysisVisualProps) {
   const [networkMode, setNetworkMode] = useState<NetworkMode>('heat')
+  const [history, setHistory] = useState<AnalysisHistory>({})
+  const stale = state.status === 'loading' ? state.previous : undefined
+  const drawable = state.status === 'success'
+    ? state.data
+    : analysisFitsLayout(stale, positions) ? stale : undefined
 
-  if (state.status === 'success') {
+  // Remember the configuration being replaced so the mixing curve can compare them.
+  if (state.status === 'success' && state.data !== history.current) {
+    setHistory({ current: state.data, previous: history.current })
+  }
+
+  if (drawable) {
     return (
       <SimulationView
         key={simulationKey}
-        analysis={state.data}
+        analysis={drawable}
+        comparison={history.previous}
         experimentId={experimentId}
+        title={title}
         positions={positions}
         mode={networkMode}
+        updating={state.status === 'loading'}
         onModeChange={setNetworkMode}
+        onSelectSource={onSelectSource}
       />
     )
   }

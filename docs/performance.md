@@ -111,6 +111,25 @@ The limits apply the Size Limit project's suggested approximately 25% baseline
 headroom and round upward to readable values. CI fails when either budget is
 exceeded.
 
+### Visual refresh re-measurement (2026-10-23)
+
+The flux traces, mixing curve, and live mode weights add per-frame work, so the
+browser boundary was re-measured against the production container with the same
+command. A bridge change now re-renders the live view in place instead of
+remounting it.
+
+| Run | Interaction | Average FPS | Frame p95 | Maximum frame | Frames over 34 ms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | 30.1 ms | 60.000 | 16.8 ms | 16.8 ms | 0% |
+| 2 | 32.0 ms | 59.999 | 16.7 ms | 16.8 ms | 0% |
+| 3 | 28.9 ms | 60.002 | 16.8 ms | 16.8 ms | 0% |
+
+The JavaScript bundle measured 86.93 kB Brotli (limit 105 kB) and CSS 4.81 kB
+(limit 5 kB). Dropping the all-caps monospace label treatment for Computer Modern
+sentence case freed CSS headroom; the four self-hosted woff2 files (Inter 63 kB and
+CMU Serif roman, italic, and bold at 26–31 kB) are cached separately and are not
+counted by the bundle budget.
+
 ## Optimization evidence
 
 Before gzip, requesting the production JavaScript with `Accept-Encoding: gzip, br`

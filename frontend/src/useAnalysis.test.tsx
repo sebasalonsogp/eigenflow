@@ -83,6 +83,21 @@ describe('useAnalysis', () => {
     })
   })
 
+  it('keeps the last result drawable while a changed request loads', async () => {
+    const pending: Array<(value: unknown) => void> = []
+    vi.stubGlobal('fetch', vi.fn()
+      .mockResolvedValueOnce(successResponse(ANALYSIS_FIXTURE))
+      .mockImplementation(() => new Promise((resolve) => pending.push(resolve))))
+    const { result, rerender } = renderHook(
+      ({ request }: { request: AnalysisRequest }) => useAnalysis(request),
+      { initialProps: { request: ANALYSIS_REQUEST } },
+    )
+    await waitFor(() => expect(result.current.status).toBe('success'))
+
+    rerender({ request: { ...ANALYSIS_REQUEST, diffusionCoefficient: 0.5 } })
+    expect(result.current).toEqual({ status: 'loading', previous: ANALYSIS_FIXTURE })
+  })
+
   it('debounces rapid request changes before calling the API', () => {
     vi.useFakeTimers()
     const fetchMock = vi.fn().mockImplementation(() => new Promise(() => undefined))

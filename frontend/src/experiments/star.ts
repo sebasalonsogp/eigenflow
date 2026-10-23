@@ -1,4 +1,5 @@
 import type { AnalysisRequest, GraphEdge } from '../api'
+import { uniformTimes } from './sampling'
 import type { ChoiceControl, ExperimentDefinition } from './types'
 
 const LEAF_IDS = Array.from({ length: 5 }, (_, index) => `leaf-${index}`)
@@ -34,7 +35,7 @@ export function createStarRequest({ heatSource }: StarParameters): AnalysisReque
     nodes: ['hub', ...LEAF_IDS].map((id) => ({ id })),
     edges,
     heatSource,
-    times: [0, 0.1, 0.25, 0.5, 1, 2, 4, 8],
+    times: uniformTimes(8, 0.1),
     diffusionCoefficient: 1,
   }
 }
