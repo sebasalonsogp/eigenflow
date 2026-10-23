@@ -30,6 +30,19 @@ x(t) = V exp(-kappa Lambda t) V^T x(0).
 
 The backend samples this solution over time. The frontend animates those samples without recomputing the model.
 
+## Display-derived quantities
+
+The frontend derives two presentation quantities from the returned, node-aligned
+samples without recomputing the model:
+
+- **Edge flux** `w_ij (x_i - x_j)` shows the instantaneous heat transfer along each
+  edge, oriented from the warmer endpoint to the cooler one. Opacity is log-scaled
+  over three decades below the run's peak flux, so a weak bridge remains visible
+  without exaggerating its magnitude.
+- **Mode weights** `v_k^T x(t)` project the current state onto the returned
+  eigenvectors. Under diffusion each weight decays as `exp(-kappa lambda_k t)`; the
+  zero mode carries the conserved mean and never decays.
+
 ## Numerical obligations
 
 Tests will verify:

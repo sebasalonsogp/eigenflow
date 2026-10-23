@@ -2,6 +2,21 @@
 
 Notable user-facing changes to Eigenflow are recorded here.
 
+## [Unreleased]
+
+### Added
+
+- Edge heat-flux traces that flow from warmer to cooler nodes during playback.
+- Live eigenmode weights beneath the Laplacian spectrum.
+- A sticky introduction with a four-step guide and a link to the source.
+
+### Changed
+
+- Heat now uses the perceptually uniform inferno palette with heat-scaled glow.
+- Curated experiments sample diffusion densely so playback follows the exact
+  exponential solution.
+- Patched vite, vitest, and source-map-js advisories.
+
 ## [1.0.0] - 2026-09-13
 
 ### Added

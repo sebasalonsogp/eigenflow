@@ -46,7 +46,7 @@ Two compact comparisons test whether the same model generalizes:
 | Signal | Evidence in the project |
 | --- | --- |
 | Mathematical modeling | Explicit `A`, `D`, and `L = D - A`; symmetric eigendecomposition; spectral heat solution; honest handling of numerical tolerance and degenerate eigenspaces. |
-| Visualization craft | Custom D3 network and spectrum views, synchronized playback and computed prose, a live community-balance readout, perceptually expanded low-heat color, Fiedler encoding, and responsive interaction. |
+| Visualization craft | Custom D3 network and spectrum views, synchronized playback and computed prose, edge-level heat-flux traces, live eigenmode weights decaying as `e^(−λt)`, a community-balance readout, a perceptually uniform heat palette, Fiedler encoding, and responsive interaction. |
 | Engineering judgment | Typed API boundaries, stale-request cancellation, local frame interpolation, invariant-based tests, measured performance budgets, CI, and one non-root production container. |
 
 The project is intentionally **not** a general graph editor or analytics platform.
@@ -123,14 +123,16 @@ npm run dev
 ```
 
 Vite proxies `/api` to FastAPI during development. The production image serves the
-compiled frontend and API from the same origin.
+compiled frontend and API from the same origin. If port 8000 is taken, run the API on
+another port and set `EIGENFLOW_API_URL` (dev proxy) or `EIGENFLOW_E2E_API_PORT`
+(browser tests) to match.
 
 ## Verification evidence
 
 The current release candidate includes:
 
 - 57 backend tests with 99% line coverage and numerical-invariant checks;
-- 77 frontend tests plus desktop and mobile Chromium coverage of the primary
+- 92 frontend tests plus desktop and mobile Chromium coverage of the primary
   recruiter journey;
 - automated and manual WCAG 2.1 AA, keyboard, reduced-motion, and responsive checks;
 - a 30-node / 435-edge / 240-sample boundary benchmark with 10.08–12.46 ms median
